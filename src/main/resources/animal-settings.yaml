@@ -1,0 +1,369 @@
+animals:
+  Wolf:
+    animalProperties:
+      weight: 50
+      moveSpeed: 30
+      weightEatToFill: 8
+    emoji: "🐺"
+    maxByLocation: 30
+    eatChance:
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 10
+      Deer: 10
+      Rabbit: 60
+      Mouse: 80
+      Goat: 60
+      Sheep: 70
+      Boar: 15
+      Buffalo: 10
+      Duck: 40
+      Larva: 0
+      Bush: 0
+  Snake:
+    animalProperties:
+      weight: 15
+      moveSpeed: 1
+      weightEatToFill: 3
+    emoji: "🐍"
+    maxByLocation: 30
+    eatChance:
+      Wolf: 0
+      Fox: 15
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 20
+      Mouse: 40
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 10
+      Larva: 0
+      Bush: 0
+  Fox:
+    animalProperties:
+      weight: 8
+      moveSpeed: 2
+      weightEatToFill: 2
+    emoji: "🦊"
+    maxByLocation: 30
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 70
+      Mouse: 90
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 60
+      Larva: 40
+      Bush: 0
+  Bear:
+    animalProperties:
+      weight: 500
+      moveSpeed: 2
+      weightEatToFill: 80
+    emoji: "🐻"
+    maxByLocation: 5
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 80
+      Eagle: 0
+      Horse: 40
+      Deer: 80
+      Rabbit: 80
+      Mouse: 90
+      Goat: 70
+      Sheep: 70
+      Boar: 50
+      Buffalo: 20
+      Duck: 10
+      Larva: 0
+      Bush: 0
+  Eagle:
+    animalProperties:
+      weight: 6
+      moveSpeed: 3
+      weightEatToFill: 1
+    emoji: "🦅"
+    maxByLocation: 20
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 10
+      Bear: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 90
+      Mouse: 90
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 80
+      Larva: 0
+      Bush: 0
+  Horse:
+    animalProperties:
+      weight: 400
+      moveSpeed: 4
+      weightEatToFill: 60
+    emoji: "🐴"
+    maxByLocation: 20
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Deer: 0
+      Rabbit: 0
+      Mouse: 0
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 0
+      Larva: 0
+      Bush: 100
+  Deer:
+    animalProperties:
+      weight: 300
+      moveSpeed: 4
+      weightEatToFill: 50
+    emoji: "🦌"
+    maxByLocation: 20
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Rabbit: 0
+      Mouse: 0
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 0
+      Larva: 0
+      Bush: 100
+  Rabbit:
+    animalProperties:
+      weight: 2
+      moveSpeed: 2
+      weightEatToFill: 0.45
+    emoji: "🐇"
+    maxByLocation: 150
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Mouse: 0
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 0
+      Larva: 0
+      Bush: 100
+  Mouse:
+    animalProperties:
+      weight: 2
+      moveSpeed: 2
+      weightEatToFill: 0.45
+    emoji: "🐁"
+    maxByLocation: 150
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 0
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 0
+      Larva: 90
+      Bush: 100
+  Goat:
+    animalProperties:
+      weight: 60
+      moveSpeed: 3
+      weightEatToFill: 10
+    emoji: "🐐"
+    maxByLocation: 140
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 0
+      Mouse: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 0
+      Larva: 0
+      Bush: 100
+  Sheep:
+    animalProperties:
+      weight: 70
+      moveSpeed: 3
+      weightEatToFill: 15
+    emoji: "🐑"
+    maxByLocation: 140
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 0
+      Mouse: 0
+      Goat: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 0
+      Larva: 0
+      Bush: 100
+  Boar:
+    animalProperties:
+      weight: 400
+      moveSpeed: 2
+      weightEatToFill: 50
+    emoji: "🐗"
+    maxByLocation: 50
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 0
+      Mouse: 0
+      Goat: 0
+      Sheep: 0
+      Buffalo: 0
+      Duck: 0
+      Larva: 90
+      Bush: 100
+  Buffalo:
+    animalProperties:
+      weight: 700
+      moveSpeed: 3
+      weightEatToFill: 100
+    emoji: "🐃"
+    maxByLocation: 10
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 0
+      Mouse: 0
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Duck: 0
+      Larva: 0
+      Bush: 100
+  Duck:
+    animalProperties:
+      weight: 1
+      moveSpeed: 4
+      weightEatToFill: 0.15
+    emoji: "🦆"
+    maxByLocation: 200
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 0
+      Mouse: 0
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Larva: 90
+      Bush: 100
+  Larva:
+    animalProperties:
+      weight: 0.01
+      moveSpeed: 0
+      weightEatToFill: 0
+    emoji: "🐛"
+    maxByLocation: 1000
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 0
+      Mouse: 0
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 0
+      Bush: 100
+  Bush:
+    animalProperties:
+      weight: 1
+      moveSpeed: 0
+      weightEatToFill: 0
+    emoji: "🌵"
+    maxByLocation: 200
+    eatChance:
+      Wolf: 0
+      Snake: 0
+      Fox: 0
+      Bear: 0
+      Eagle: 0
+      Horse: 0
+      Deer: 0
+      Rabbit: 0
+      Mouse: 0
+      Goat: 0
+      Sheep: 0
+      Boar: 0
+      Buffalo: 0
+      Duck: 0
+      Larva: 0
