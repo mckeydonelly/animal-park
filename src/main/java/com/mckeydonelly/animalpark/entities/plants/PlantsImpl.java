@@ -9,9 +9,11 @@ import com.mckeydonelly.animalpark.settings.animal.AnimalProperties;
  */
 public class PlantsImpl implements Plants {
     private final double weight;
+    private boolean dead;
 
     public PlantsImpl(AnimalProperties animalProperties) {
         this.weight = animalProperties.getWeight();
+        this.dead = false;
     }
 
     @Override
@@ -22,6 +24,16 @@ public class PlantsImpl implements Plants {
     @Override
     public void resetReproduction() {
         // Don't need to do anything.
+    }
+
+    @Override
+    public void die() {
+        dead = true;
+    }
+
+    @Override
+    public boolean isDead() {
+        return dead;
     }
 
     @Override

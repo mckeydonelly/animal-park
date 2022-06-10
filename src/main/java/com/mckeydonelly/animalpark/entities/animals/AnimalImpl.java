@@ -23,6 +23,7 @@ public abstract class AnimalImpl implements Animal {
     private final EntityFactory entityFactory;
     protected Position positionOnMap;
     private double weightEaten;
+    private boolean dead;
     private volatile boolean readyToReproduction;
 
     protected AnimalImpl(Position position, EntityFactory entityFactory, AnimalProperties animalProperties) {
@@ -40,18 +41,21 @@ public abstract class AnimalImpl implements Animal {
         return weight;
     }
 
-    /**
-     * Сбрасывает счетчик готовности к размножению
-     */
     @Override
     public void resetReproduction() {
         readyToReproduction = true;
     }
 
-    /**
-     * Выполняет ход животного
-     * @param parkMap Карта парка
-     */
+    @Override
+    public void die() {
+        dead = true;
+    }
+
+    @Override
+    public boolean isDead() {
+        return dead;
+    }
+
     @Override
     public void doTurn(ParkMap parkMap) {
 
@@ -83,15 +87,23 @@ public abstract class AnimalImpl implements Animal {
                     .filter(entity -> eatableList.contains(entity.getClass().getSimpleName().toUpperCase()))
                     .collect(Collectors.toCollection(ArrayList::new));
 
-            if (eatableEntities.isEmpty()) {
-                return;
-            }
+            if (!eatableEntities.isEmpty()) {
+                boolean successEat = false;
 
-            int randomTarget = ThreadLocalRandom.current().nextInt(eatableEntities.size());
-            Entity targetEntity = eatableEntities.get(randomTarget);
-            if (EatingProcessor.getEatResult(this, targetEntity)) {
-                weightEaten = Math.min(weightEaten + targetEntity.getWeight(), weightEatToFill);
-                location.remove(targetEntity);
+                while (!successEat) {
+                    int randomTarget = ThreadLocalRandom.current().nextInt(eatableEntities.size());
+                    Entity targetEntity = eatableEntities.get(randomTarget);
+                    if (!targetEntity.isDead()) {
+                        if (EatingProcessor.getEatResult(this, targetEntity)) {
+                            weightEaten = Math.min(weightEaten + targetEntity.getWeight(), weightEatToFill);
+                            targetEntity.die();
+                            location.remove(targetEntity);
+                            successEat = true;
+                        } else {
+                            eatableEntities.remove(targetEntity);
+                        }
+                    }
+                }
             }
         } finally {
             location.unlockLocation();
@@ -136,7 +148,7 @@ public abstract class AnimalImpl implements Animal {
 
         while (stepsToMove > 0) {
             int directionIndex = ThreadLocalRandom.current().nextInt(Direction.values().length);
-            endLocation = getNextPosition(parkMap, endLocation,Direction.values()[directionIndex]);
+            endLocation = getNextPosition(parkMap, endLocation, Direction.values()[directionIndex]);
             if (endLocation == null) {
                 endLocation = currentLocation;
             }
@@ -170,8 +182,9 @@ public abstract class AnimalImpl implements Animal {
     private void reducePower(Location location) {
         weightEaten -= weightEatToFill / SimulationSettings.get(SettingsType.TURNS_FOR_DIE_BY_MAX_FILL);
         if (weightEaten <= 0) {
-                location.lockLocation();
+            location.lockLocation();
             try {
+                die();
                 location.remove(this);
             } finally {
                 location.unlockLocation();
@@ -181,9 +194,9 @@ public abstract class AnimalImpl implements Animal {
 
     /**
      * Вычисляет позицию последующего положения животного и проверяет возможность перемещения
-     * @param parkMap Карта парка
+     * @param parkMap         Карта парка
      * @param currentLocation Текущая локация на карте
-     * @param direction Направление движения
+     * @param direction       Направление движения
      * @return Локация последующего положения животного
      */
     private Location getNextPosition(ParkMap parkMap, Location currentLocation, Direction direction) {
@@ -197,10 +210,10 @@ public abstract class AnimalImpl implements Animal {
             case RIGHT -> new Position(currentRow, currentColumn + 1);
         };
 
-        if(nextPosition.column() >= SimulationSettings.get(SettingsType.MAP_COLUMNS) ||
-        nextPosition.column() < 0 ||
-        nextPosition.row() >= SimulationSettings.get(SettingsType.MAP_ROWS) ||
-        nextPosition.row() < 0) {
+        if (nextPosition.column() >= SimulationSettings.get(SettingsType.MAP_COLUMNS) ||
+                nextPosition.column() < 0 ||
+                nextPosition.row() >= SimulationSettings.get(SettingsType.MAP_ROWS) ||
+                nextPosition.row() < 0) {
             return currentLocation;
         } else {
             return parkMap.getLocation(nextPosition.row(), nextPosition.column());
