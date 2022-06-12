@@ -6,5 +6,5 @@ import com.mckeydonelly.animalpark.map.Position;
  * Интерфейс для создания сущностей.
  */
 public interface EntityFactory {
-    Entity createEntity(EntityType entityType, Position position);
+    Entity createEntity(String entityType, Position position);
 }

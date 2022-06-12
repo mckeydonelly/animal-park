@@ -1,6 +1,9 @@
 package com.mckeydonelly.animalpark.entities.animals;
 
-import com.mckeydonelly.animalpark.entities.*;
+import com.mckeydonelly.animalpark.entities.ActionTypes;
+import com.mckeydonelly.animalpark.entities.EatingProcessor;
+import com.mckeydonelly.animalpark.entities.Entity;
+import com.mckeydonelly.animalpark.entities.EntityFactory;
 import com.mckeydonelly.animalpark.map.Location;
 import com.mckeydonelly.animalpark.map.ParkMap;
 import com.mckeydonelly.animalpark.map.Position;
@@ -84,24 +87,17 @@ public abstract class AnimalImpl implements Animal {
         try {
             Set<String> eatableList = EatingProcessor.getEatableList(this);
             ArrayList<Entity> eatableEntities = location.getEntitiesOnLocationList().stream()
-                    .filter(entity -> eatableList.contains(entity.getClass().getSimpleName().toUpperCase()))
+                    .filter(entity -> eatableList.contains(entity.getClass().getSimpleName()))
                     .collect(Collectors.toCollection(ArrayList::new));
 
             if (!eatableEntities.isEmpty()) {
-                boolean successEat = false;
-
-                while (!successEat) {
-                    int randomTarget = ThreadLocalRandom.current().nextInt(eatableEntities.size());
-                    Entity targetEntity = eatableEntities.get(randomTarget);
-                    if (!targetEntity.isDead()) {
-                        if (EatingProcessor.getEatResult(this, targetEntity)) {
-                            weightEaten = Math.min(weightEaten + targetEntity.getWeight(), weightEatToFill);
-                            targetEntity.die();
-                            location.remove(targetEntity);
-                            successEat = true;
-                        } else {
-                            eatableEntities.remove(targetEntity);
-                        }
+                int randomTarget = ThreadLocalRandom.current().nextInt(eatableEntities.size());
+                Entity targetEntity = eatableEntities.get(randomTarget);
+                if (!targetEntity.isDead()) {
+                    if (EatingProcessor.getEatResult(this, targetEntity)) {
+                        weightEaten = Math.min(weightEaten + targetEntity.getWeight(), weightEatToFill);
+                        targetEntity.die();
+                        location.remove(targetEntity);
                     }
                 }
             }
@@ -131,7 +127,7 @@ public abstract class AnimalImpl implements Animal {
 
             if (compatibleForReproduction != null) {
                 compatibleForReproduction.reproduction(location, true);
-                Entity childEntity = entityFactory.createEntity(EntityType.valueOf(this.getClass().getSimpleName().toUpperCase()), positionOnMap);
+                Entity childEntity = entityFactory.createEntity(this.getClass().getSimpleName(), positionOnMap);
                 location.add(childEntity);
                 readyToReproduction = false;
             }
@@ -177,6 +173,7 @@ public abstract class AnimalImpl implements Animal {
 
     /**
      * Уменьшает запас сил (еды в желудке) животного и если он погибает, то удаляет его из карты
+     *
      * @param location Текущая локация на карте
      */
     private void reducePower(Location location) {
@@ -194,6 +191,7 @@ public abstract class AnimalImpl implements Animal {
 
     /**
      * Вычисляет позицию последующего положения животного и проверяет возможность перемещения
+     *
      * @param parkMap         Карта парка
      * @param currentLocation Текущая локация на карте
      * @param direction       Направление движения

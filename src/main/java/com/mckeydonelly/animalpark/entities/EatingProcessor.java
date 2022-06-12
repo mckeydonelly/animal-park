@@ -17,9 +17,9 @@ public class EatingProcessor {
 
     static {
         chanceMap = new HashMap<>();
-        for (EntityType entityType : EntityType.values()) {
-            chanceMap.put(entityType.getName(), new HashMap<>(SettingsService.getAnimalByName(entityType.getName()).getEatChance()));
-        }
+        SettingsService.getAnimalSettings()
+                .getAnimals()
+                .forEach((name, values) -> chanceMap.put(name, values.getEatChance()));
     }
 
     private EatingProcessor() {

@@ -11,24 +11,25 @@ import com.mckeydonelly.animalpark.map.Position;
 public class EntityFactoryImpl implements EntityFactory {
 
     @Override
-    public Entity createEntity(EntityType entityType, Position position) {
+    public Entity createEntity(String entityType, Position position) {
         return switch (entityType) {
-            case BEAR -> new Bear(position, this);
-            case EAGLE -> new Eagle(position, this);
-            case FOX -> new Fox(position, this);
-            case SNAKE -> new Snake(position, this);
-            case WOLF -> new Wolf(position, this);
-            case BOAR -> new Boar(position, this);
-            case BUFFALO -> new Buffalo(position, this);
-            case DEER -> new Deer(position, this);
-            case DUCK -> new Duck(position, this);
-            case GOAT -> new Goat(position, this);
-            case HORSE -> new Horse(position, this);
-            case LARVA -> new Larva(position, this);
-            case MOUSE -> new Mouse(position, this);
-            case RABBIT -> new Rabbit(position, this);
-            case SHEEP -> new Sheep(position, this);
-            case BUSH -> new Bush();
+            case "Bear" -> new Bear(position, this);
+            case "Eagle" -> new Eagle(position, this);
+            case "Fox" -> new Fox(position, this);
+            case "Snake" -> new Snake(position, this);
+            case "Wolf" -> new Wolf(position, this);
+            case "Boar" -> new Boar(position, this);
+            case "Buffalo" -> new Buffalo(position, this);
+            case "Deer" -> new Deer(position, this);
+            case "Duck" -> new Duck(position, this);
+            case "Goat" -> new Goat(position, this);
+            case "Horse" -> new Horse(position, this);
+            case "Larva" -> new Larva(position, this);
+            case "Mouse" -> new Mouse(position, this);
+            case "Rabbit" -> new Rabbit(position, this);
+            case "Sheep" -> new Sheep(position, this);
+            case "Bush" -> new Bush();
+            default -> throw new IllegalArgumentException("Unknown entity type: " + entityType);
         };
     }
 }

@@ -65,4 +65,12 @@ public class SettingsService {
     public static Animal getAnimalByName(String name) {
         return animalSettings.getAnimals().get(name);
     }
+
+    /**
+     * Получение настроек животных
+     * @return настройки животных.
+     */
+    public static AnimalSettings getAnimalSettings() {
+        return animalSettings;
+    }
 }

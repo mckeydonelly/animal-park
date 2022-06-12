@@ -8,7 +8,7 @@ import com.mckeydonelly.animalpark.map.Position;
  */
 public class PlantsFactory implements EntityFactory {
     @Override
-    public Entity createEntity(EntityType entityType, Position position) {
+    public Entity createEntity(String entityType, Position position) {
         return new Bush();
     }
 }

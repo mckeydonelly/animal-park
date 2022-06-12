@@ -1,11 +1,10 @@
 package com.mckeydonelly.animalpark.utils;
 
-import com.mckeydonelly.animalpark.entities.EntityType;
 import com.mckeydonelly.animalpark.map.ParkMap;
-import com.mckeydonelly.animalpark.utils.console.ConsoleReaderHelper;
 import com.mckeydonelly.animalpark.menu.IngameMenu;
+import com.mckeydonelly.animalpark.settings.SettingsService;
+import com.mckeydonelly.animalpark.utils.console.ConsoleReaderHelper;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,11 +35,12 @@ public class StatisticProcessor {
                 .toList()
                 .forEach(location -> location.getUniqueEntitiesCount().forEach((k, v) -> uniqueEntitiesTotal.merge(k, v, Integer::sum)));
 
-        Arrays.stream(EntityType.values()).forEach(entityType -> statPrint
-                .append(entityType.getEmoji())
-                .append("=")
-                .append(uniqueEntitiesTotal.getOrDefault(entityType.toString(), 0))
-                .append("\n"));
+        SettingsService.getAnimalSettings()
+                .getAnimals().forEach((key, value) -> statPrint
+                        .append(value.getEmoji())
+                        .append("=")
+                        .append(uniqueEntitiesTotal.getOrDefault(key, 0))
+                        .append("\n"));
 
         System.out.println(statPrint);
     }

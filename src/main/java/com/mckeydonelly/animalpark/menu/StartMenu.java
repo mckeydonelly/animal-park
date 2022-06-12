@@ -19,10 +19,7 @@ public class StartMenu {
     private final LineReader lineReader = ConsoleReaderHelper.getLineReader();
 
     public void start() {
-        StringBuilder menu = new StringBuilder();
-        menu.append("s - start with default parameters\n");
-        menu.append("c - manual configuration\n");
-        menu.append("q - quit");
+        String menu = "s - start with default parameters\nc - manual configuration\nq - quit";
         System.out.println(menu);
 
         int command = 0;

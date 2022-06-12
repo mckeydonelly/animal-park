@@ -2,7 +2,7 @@ package com.mckeydonelly.animalpark.map;
 
 import com.mckeydonelly.animalpark.entities.Entity;
 import com.mckeydonelly.animalpark.entities.EntityFactory;
-import com.mckeydonelly.animalpark.entities.EntityType;
+import com.mckeydonelly.animalpark.settings.SettingsService;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,13 +36,17 @@ public class Location {
 
     /**
      * Заполняет локацию новыми сущностями.
+     *
      * @param entityFactory Фабрика сущностей.
      */
     public void fill(EntityFactory entityFactory) {
         Random randomEntityIndex = new Random();
 
-        for (int index = 0; index <= EntityType.values().length; index++) {
-            EntityType entityType = EntityType.values()[randomEntityIndex.nextInt(EntityType.values().length)];
+        List<String> entityTypes = new ArrayList<>(SettingsService.getAnimalSettings().getAnimals().keySet());
+        int entityTypesCount = SettingsService.getAnimalSettings().getAnimals().size();
+
+        for (int index = 0; index <= entityTypesCount; index++) {
+            String entityType = entityTypes.get(randomEntityIndex.nextInt(entityTypesCount));
             Entity entity = entityFactory.createEntity(entityType, position);
             add(entity);
         }
@@ -58,6 +62,7 @@ public class Location {
 
     /**
      * Добавляет сущность на локацию.
+     *
      * @param entity Сущность.
      */
     public void add(Entity entity) {
@@ -68,6 +73,7 @@ public class Location {
 
     /**
      * Удаляет сущность с локации.
+     *
      * @param entity Сущность.
      */
     public void remove(Entity entity) {
@@ -77,12 +83,13 @@ public class Location {
 
     /**
      * Изменяет счетчик с лимитами уникальных сущностей.
+     *
      * @param entity Сущность.
-     * @param leave Признак выхода или смерти сущности из локации.
+     * @param leave  Признак выхода или смерти сущности из локации.
      * @return Признак успешного изменения счетчика.
      */
     public boolean changeUniqueEntities(Entity entity, boolean leave) {
-        String entityName = entity.getClass().getSimpleName().toUpperCase();
+        String entityName = entity.getClass().getSimpleName();
 
         int countUniqueEntityOnLocation = uniqueEntitiesCount.getOrDefault(entityName, 0);
 
@@ -104,7 +111,7 @@ public class Location {
      * Проверяет на превышение лимита уникальных сущностей.
      */
     private boolean checkMaxCountEntities(String entityName, int countUniqueEntityOnLocation) {
-        return countUniqueEntityOnLocation <= EntityType.valueOf(entityName.toUpperCase()).getMaxEntitiesByLocation() - 1;
+        return countUniqueEntityOnLocation <= SettingsService.getAnimalSettings().getAnimals().get(entityName).getMaxByLocation() - 1;
     }
 
     @Override
@@ -119,11 +126,12 @@ public class Location {
         result.append("[");
 
         if (uniqueEntitiesCount.size() > 0) {
-            Arrays.stream(EntityType.values()).forEach(entityType -> result
-                    .append(entityType.getEmoji())
-                    .append("=")
-                    .append(uniqueEntitiesCount.getOrDefault(entityType.toString(), 0))
-                    .append(","));
+            SettingsService.getAnimalSettings()
+                    .getAnimals().forEach((key, value) -> result
+                            .append(value.getEmoji())
+                            .append("=")
+                            .append(uniqueEntitiesCount.getOrDefault(key, 0))
+                            .append(","));
             result.deleteCharAt(result.lastIndexOf(","));
         }
 

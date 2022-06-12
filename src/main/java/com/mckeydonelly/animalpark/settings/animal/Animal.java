@@ -23,6 +23,10 @@ public class Animal {
         return maxByLocation;
     }
 
+    public int maxByLocation() {
+        return maxByLocation;
+    }
+
     public Map<String, Integer> getEatChance() {
         return eatChance;
     }

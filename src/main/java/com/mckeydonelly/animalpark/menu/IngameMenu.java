@@ -5,11 +5,9 @@ package com.mckeydonelly.animalpark.menu;
  */
 public class IngameMenu {
     public String getIngameMenu() {
-        StringBuilder menu = new StringBuilder();
-        menu.append("p - pause | ");
-        menu.append("g - get statistics for a specific cell | ");
-        menu.append("q - quit\n");
+        //TODO change to static class with strings or property
+        String menu = "p - pause | g - get statistics for a specific cell | q - quit\n";
 
-        return menu.toString();
+        return menu;
     }
 }
