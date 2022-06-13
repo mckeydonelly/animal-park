@@ -1,7 +1,6 @@
 package com.mckeydonelly.animalpark.entities.plants;
 
-import com.mckeydonelly.animalpark.map.Location;
-import com.mckeydonelly.animalpark.map.ParkMap;
+import com.mckeydonelly.animalpark.map.Position;
 import com.mckeydonelly.animalpark.settings.animal.AnimalProperties;
 
 /**
@@ -22,11 +21,6 @@ public class PlantsImpl implements Plants {
     }
 
     @Override
-    public void resetReproduction() {
-        // Don't need to do anything.
-    }
-
-    @Override
     public void die() {
         dead = true;
     }
@@ -37,23 +31,41 @@ public class PlantsImpl implements Plants {
     }
 
     @Override
-    public void doTurn(ParkMap parkMap) {
-        // Don't need to do anything.
+    public Position getPosition() {
+        return null;
     }
 
     @Override
-    public void eat(Location location) {
-        // Don't need to do anything.
+    public void setPosition(Position position) {
+
     }
 
     @Override
-    public void reproduction(Location location, boolean externalReproduction) {
-        // Don't need to do anything.
+    public double getWeightEaten() {
+        return 0;
     }
 
     @Override
-    public void move(ParkMap parkMap) {
-        // Don't need to do anything.
+    public void setWeightEaten(double weightEaten) {
+
     }
 
+    @Override
+    public double getWeightEatToFill() {
+        return 0;
+    }
+
+    @Override
+    public boolean isReadyToReproduction() {
+        return false;
+    }
+
+    @Override
+    public void setReadyToReproduction(boolean readyToReproduction) {
+    }
+
+    @Override
+    public int getMoveSpeed() {
+        return 0;
+    }
 }

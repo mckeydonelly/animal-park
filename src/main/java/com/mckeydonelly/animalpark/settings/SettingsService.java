@@ -26,7 +26,7 @@ public class SettingsService {
     /**
      * Инициализация настроек приложения из properties файла в случае запуска с дефолтными настройками.
      */
-    public static void setDefaultSettings() {
+    public static SimulationSettings getDefaultSettings() {
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(APP_SETTINGS_PATH)) {
             appSettings.load(inputStream);
         } catch (IOException e) {
@@ -34,12 +34,13 @@ public class SettingsService {
             System.exit(1);
         }
 
-        SimulationSettings.add(SettingsType.MAP_ROWS, Integer.valueOf(appSettings.getProperty(SettingsType.MAP_ROWS.getTypeCode())));
-        SimulationSettings.add(SettingsType.MAP_COLUMNS, Integer.valueOf(appSettings.getProperty(SettingsType.MAP_COLUMNS.getTypeCode())));
-        SimulationSettings.add(SettingsType.TURNS_COUNT, Integer.valueOf(appSettings.getProperty(SettingsType.TURNS_COUNT.getTypeCode())));
-        SimulationSettings.add(SettingsType.TURNS_FOR_DIE_BY_MAX_FILL, Integer.valueOf(appSettings.getProperty(SettingsType.TURNS_FOR_DIE_BY_MAX_FILL.getTypeCode())));
-        SimulationSettings.add(SettingsType.STATISTIC_UPDATE_FREQUENCY, Integer.valueOf(appSettings.getProperty(SettingsType.STATISTIC_UPDATE_FREQUENCY.getTypeCode())));
-        SimulationSettings.add(SettingsType.GROW_PLANTS_FREQUENCY, Integer.valueOf(appSettings.getProperty(SettingsType.GROW_PLANTS_FREQUENCY.getTypeCode())));
+        SimulationSettings settings = new SimulationSettings();
+
+        for (SettingsType settingsType : SettingsType.values()) {
+            settings.add(settingsType, Integer.valueOf(appSettings.getProperty(settingsType.getTypeCode())));
+        }
+
+        return settings;
     }
 
     /**

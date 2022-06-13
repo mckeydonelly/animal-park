@@ -13,21 +13,21 @@ public class EntityFactoryImpl implements EntityFactory {
     @Override
     public Entity createEntity(String entityType, Position position) {
         return switch (entityType) {
-            case "Bear" -> new Bear(position, this);
-            case "Eagle" -> new Eagle(position, this);
-            case "Fox" -> new Fox(position, this);
-            case "Snake" -> new Snake(position, this);
-            case "Wolf" -> new Wolf(position, this);
-            case "Boar" -> new Boar(position, this);
-            case "Buffalo" -> new Buffalo(position, this);
-            case "Deer" -> new Deer(position, this);
-            case "Duck" -> new Duck(position, this);
-            case "Goat" -> new Goat(position, this);
-            case "Horse" -> new Horse(position, this);
-            case "Larva" -> new Larva(position, this);
-            case "Mouse" -> new Mouse(position, this);
-            case "Rabbit" -> new Rabbit(position, this);
-            case "Sheep" -> new Sheep(position, this);
+            case "Bear" -> new Bear(position);
+            case "Eagle" -> new Eagle(position);
+            case "Fox" -> new Fox(position);
+            case "Snake" -> new Snake(position);
+            case "Wolf" -> new Wolf(position);
+            case "Boar" -> new Boar(position);
+            case "Buffalo" -> new Buffalo(position);
+            case "Deer" -> new Deer(position);
+            case "Duck" -> new Duck(position);
+            case "Goat" -> new Goat(position);
+            case "Horse" -> new Horse(position);
+            case "Larva" -> new Larva(position);
+            case "Mouse" -> new Mouse(position);
+            case "Rabbit" -> new Rabbit(position);
+            case "Sheep" -> new Sheep(position);
             case "Bush" -> new Bush();
             default -> throw new IllegalArgumentException("Unknown entity type: " + entityType);
         };

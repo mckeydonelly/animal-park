@@ -18,18 +18,21 @@ public class StartMenu {
     private final NonBlockingReader reader = ConsoleReaderHelper.getReader();
     private final LineReader lineReader = ConsoleReaderHelper.getLineReader();
 
-    public void start() {
+
+    public SimulationSettings start() {
         String menu = "s - start with default parameters\nc - manual configuration\nq - quit";
         System.out.println(menu);
 
         int command = 0;
 
+        SimulationSettings settings = new SimulationSettings();
+
         while (command != 's' && command != 'c') {
             try {
                 command = reader.read();
                 switch (command) {
-                    case 's' -> SettingsService.setDefaultSettings();
-                    case 'c' -> manualConfiguration(lineReader);
+                    case 's' -> settings = SettingsService.getDefaultSettings();
+                    case 'c' -> settings = manualConfiguration(settings, lineReader);
                     case 'q' -> System.exit(0);
                     default -> System.out.print("\r");
                 }
@@ -38,26 +41,30 @@ public class StartMenu {
             }
         }
 
-        printStartParameters();
+        printStartParameters(settings);
         ConsoleReaderHelper.clearConsole();
+
+        return settings;
     }
 
-    private void manualConfiguration(LineReader lineReader) {
+    private SimulationSettings manualConfiguration(SimulationSettings settings, LineReader lineReader) {
         System.out.println("Welcome to animal park simulation!");
         System.out.println("For starting the simulation please enter configuration parameters: ");
 
         for (SettingsType settingsType : SettingsType.values()) {
-            getInputParameter(lineReader, settingsType);
+            getInputParameter(lineReader, settings, settingsType);
         }
+
+        return settings;
     }
 
-    private void getInputParameter(LineReader lineReader, SettingsType type) {
+    private void getInputParameter(LineReader lineReader, SimulationSettings settings, SettingsType type) {
         boolean badParam = true;
         System.out.print("Enter " + type.getDescription() + ": ");
         while (badParam) {
             try {
                 int paramValue = Integer.parseInt(lineReader.readLine());
-                SimulationSettings.add(type, paramValue);
+                settings.add(type, paramValue);
                 badParam = false;
             } catch (NumberFormatException e) {
                 System.out.println(colorize("Please enter correct value.", RED_TEXT(), NONE()));
@@ -65,10 +72,10 @@ public class StartMenu {
         }
     }
 
-    private void printStartParameters() {
+    private void printStartParameters(SimulationSettings settings) {
         System.out.println("\nStart simulation with parameters:");
         for (SettingsType settingsType : SettingsType.values()) {
-            System.out.println("Parameter: " + settingsType.getDescription() + " - " + SimulationSettings.get(settingsType));
+            System.out.println("Parameter: " + settingsType.getDescription() + " - " + settings.get(settingsType));
         }
         System.out.println("\nFor continue press SPACE...");
         waitForSpace();

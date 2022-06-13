@@ -15,10 +15,10 @@ import java.util.List;
 public class MapProcessor {
     private final EntityFactory entityFactory = new EntityFactoryImpl();
 
-    public ParkMap create() {
+    public ParkMap create(SimulationSettings settings) {
         System.out.println("Start creating map...");
 
-        ParkMap parkMap = initializeMap();
+        ParkMap parkMap = initializeMap(settings);
         generateCreature(parkMap);
 
         System.out.println("World creating completed");
@@ -26,11 +26,11 @@ public class MapProcessor {
         return parkMap;
     }
 
-    private ParkMap initializeMap() {
+    private ParkMap initializeMap(SimulationSettings settings) {
         System.out.println("Creating locations...");
 
-        int mapRows = SimulationSettings.get(SettingsType.MAP_ROWS);
-        int mapColumns = SimulationSettings.get(SettingsType.MAP_COLUMNS);
+        int mapRows = settings.get(SettingsType.MAP_ROWS);
+        int mapColumns = settings.get(SettingsType.MAP_COLUMNS);
 
         List<List<Location>> tmpMap = new ArrayList<>();
 

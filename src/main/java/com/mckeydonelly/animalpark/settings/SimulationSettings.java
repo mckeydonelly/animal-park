@@ -8,15 +8,14 @@ import java.util.Map;
  */
 public class SimulationSettings {
 
-    private SimulationSettings() {}
-    private static final Map<String, Integer> config = new HashMap<>();
+    private final Map<String, Integer> config = new HashMap<>();
 
     /**
      * Добавляет настройку в конфигурацию
      * @param type - тип настройки из {@link com.mckeydonelly.animalpark.settings.SettingsType}
      * @param value - значение настройки
      */
-    public static void add(SettingsType type, Integer value) {
+    public void add(SettingsType type, Integer value) {
         config.put(type.getTypeCode(), value);
     }
 
@@ -25,7 +24,7 @@ public class SimulationSettings {
      * @param type - тип настройки из {@link com.mckeydonelly.animalpark.settings.SettingsType}
      * @return значение настройки
      */
-    public static Integer get(SettingsType type) {
+    public Integer get(SettingsType type) {
         return config.get(type.getTypeCode());
     }
 
