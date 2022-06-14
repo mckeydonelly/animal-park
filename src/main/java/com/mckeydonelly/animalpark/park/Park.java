@@ -34,7 +34,7 @@ public class Park {
     }
 
     public void start() {
-        System.out.println("Welcome to animal park!");
+        System.out.println("Welcome to animal park simulation!");
         SimulationSettings settings = startMenu.start();
 
         ParkMap parkMap = mapProcessor.create(settings);

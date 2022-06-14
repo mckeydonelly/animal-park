@@ -25,19 +25,18 @@ public class StartMenu {
 
 
     public SimulationSettings start() {
-        String menu = "s - start with default parameters\nc - manual configuration\nq - quit";
+        String menu = "\ns - start with default parameters\nc - manual configuration\nq - quit";
         System.out.println(menu);
 
         int command = 0;
 
-        SimulationSettings settings = new SimulationSettings();
+        SimulationSettings settings = settingsService.getDefaultSettings();
 
         while (command != 's' && command != 'c') {
             try {
                 command = reader.read();
                 switch (command) {
-                    case 's' -> settings = settingsService.getDefaultSettings();
-                    case 'c' -> settings = manualConfiguration(settings, lineReader);
+                    case 'c' -> manualConfiguration(settings, lineReader);
                     case 'q' -> System.exit(0);
                     default -> System.out.print("\r");
                 }
@@ -53,15 +52,12 @@ public class StartMenu {
         return settings;
     }
 
-    private SimulationSettings manualConfiguration(SimulationSettings settings, LineReader lineReader) {
-        System.out.println("Welcome to animal park simulation!");
-        System.out.println("For starting the simulation please enter configuration parameters: ");
+    private void manualConfiguration(SimulationSettings settings, LineReader lineReader) {
+        System.out.println("\nFor starting the simulation please enter configuration parameters (press ENTER for default settings): ");
 
         for (SettingsType settingsType : SettingsType.values()) {
             getInputParameter(lineReader, settings, settingsType);
         }
-
-        return settings;
     }
 
     private void getInputParameter(LineReader lineReader, SimulationSettings settings, SettingsType type) {
@@ -69,7 +65,11 @@ public class StartMenu {
         System.out.print("Enter " + type.getDescription() + ": ");
         while (badParam) {
             try {
-                int paramValue = Integer.parseInt(lineReader.readLine());
+                String input = lineReader.readLine();
+                if("".equals(input)) {
+                    break;
+                }
+                int paramValue = Integer.parseInt(input);
                 settings.add(type, paramValue);
                 badParam = false;
             } catch (NumberFormatException e) {
