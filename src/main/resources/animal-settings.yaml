@@ -325,7 +325,7 @@ animals:
     animalProperties:
       weight: 0.01
       moveSpeed: 0
-      weightEatToFill: 0
+      weightEatToFill: 1
     emoji: "🐛"
     maxByLocation: 1000
     eatChance:

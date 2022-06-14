@@ -6,6 +6,7 @@ import com.mckeydonelly.animalpark.entities.animals.Animal;
 import com.mckeydonelly.animalpark.map.Location;
 import com.mckeydonelly.animalpark.map.ParkMap;
 import com.mckeydonelly.animalpark.menu.IngameMenuListener;
+import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SettingsType;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
 import com.mckeydonelly.animalpark.utils.StatisticProcessor;
@@ -26,6 +27,7 @@ public class ActivityProcessor {
     private final StatisticProcessor statisticProcessor;
     private final LifeCycleProcessor lifeCycleProcessor;
     private final SimulationSettings settings;
+    private final SettingsService settingsService;
     private final AtomicInteger turnsCount;
     private final int startTurnsCount;
     private volatile boolean stop;
@@ -33,10 +35,12 @@ public class ActivityProcessor {
     public ActivityProcessor(ParkMap parkMap,
                              StatisticProcessor statisticProcessor,
                              LifeCycleProcessor lifeCycleProcessor,
+                             SettingsService settingsService,
                              SimulationSettings settings) {
         this.parkMap = parkMap;
         this.statisticProcessor = statisticProcessor;
         this.lifeCycleProcessor = lifeCycleProcessor;
+        this.settingsService = settingsService;
         this.settings = settings;
         this.turnsCount = new AtomicInteger(settings.get(SettingsType.TURNS_COUNT));
         this.startTurnsCount = settings.get(SettingsType.TURNS_COUNT);
@@ -155,6 +159,7 @@ public class ActivityProcessor {
     }
 
     private void shutdownActivity() {
+        statisticProcessor.printStatistic(parkMap, startTurnsCount, startTurnsCount - turnsCount.get());
         executorService.shutdownNow();
         scheduledExecutorService.shutdownNow();
     }

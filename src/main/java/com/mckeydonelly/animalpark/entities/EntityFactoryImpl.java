@@ -4,6 +4,7 @@ import com.mckeydonelly.animalpark.entities.animals.predators.*;
 import com.mckeydonelly.animalpark.entities.animals.vegetarians.*;
 import com.mckeydonelly.animalpark.entities.plants.Bush;
 import com.mckeydonelly.animalpark.map.Position;
+import com.mckeydonelly.animalpark.settings.animal.AnimalProperties;
 
 /**
  * Фабрика для создания сущностей
@@ -11,24 +12,24 @@ import com.mckeydonelly.animalpark.map.Position;
 public class EntityFactoryImpl implements EntityFactory {
 
     @Override
-    public Entity createEntity(String entityType, Position position) {
+    public Entity createEntity(String entityType, AnimalProperties animalProperties, Position position) {
         return switch (entityType) {
-            case "Bear" -> new Bear(position);
-            case "Eagle" -> new Eagle(position);
-            case "Fox" -> new Fox(position);
-            case "Snake" -> new Snake(position);
-            case "Wolf" -> new Wolf(position);
-            case "Boar" -> new Boar(position);
-            case "Buffalo" -> new Buffalo(position);
-            case "Deer" -> new Deer(position);
-            case "Duck" -> new Duck(position);
-            case "Goat" -> new Goat(position);
-            case "Horse" -> new Horse(position);
-            case "Larva" -> new Larva(position);
-            case "Mouse" -> new Mouse(position);
-            case "Rabbit" -> new Rabbit(position);
-            case "Sheep" -> new Sheep(position);
-            case "Bush" -> new Bush();
+            case "Bear" -> new Bear(position, animalProperties);
+            case "Eagle" -> new Eagle(position, animalProperties);
+            case "Fox" -> new Fox(position, animalProperties);
+            case "Snake" -> new Snake(position, animalProperties);
+            case "Wolf" -> new Wolf(position, animalProperties);
+            case "Boar" -> new Boar(position, animalProperties);
+            case "Buffalo" -> new Buffalo(position, animalProperties);
+            case "Deer" -> new Deer(position, animalProperties);
+            case "Duck" -> new Duck(position, animalProperties);
+            case "Goat" -> new Goat(position, animalProperties);
+            case "Horse" -> new Horse(position, animalProperties);
+            case "Larva" -> new Larva(position, animalProperties);
+            case "Mouse" -> new Mouse(position, animalProperties);
+            case "Rabbit" -> new Rabbit(position, animalProperties);
+            case "Sheep" -> new Sheep(position, animalProperties);
+            case "Bush" -> new Bush(animalProperties);
             default -> throw new IllegalArgumentException("Unknown entity type: " + entityType);
         };
     }

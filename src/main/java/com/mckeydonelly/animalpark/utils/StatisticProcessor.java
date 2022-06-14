@@ -14,9 +14,11 @@ import java.util.Map;
  */
 public class StatisticProcessor {
     private final IngameMenu ingameMenu;
+    private final SettingsService settingsService;
 
-    public StatisticProcessor(IngameMenu ingameMenu) {
+    public StatisticProcessor(IngameMenu ingameMenu, SettingsService settingsService) {
         this.ingameMenu = ingameMenu;
+        this.settingsService = settingsService;
     }
 
     public void printStatistic(ParkMap parkMap, int totalTurns, int turnNumber) {
@@ -35,7 +37,7 @@ public class StatisticProcessor {
                 .toList()
                 .forEach(location -> location.getUniqueEntitiesCount().forEach((k, v) -> uniqueEntitiesTotal.merge(k, v, Integer::sum)));
 
-        SettingsService.getAnimalSettings()
+        settingsService.getAnimalSettings()
                 .getAnimals().forEach((key, value) -> statPrint
                         .append(value.getEmoji())
                         .append("=")

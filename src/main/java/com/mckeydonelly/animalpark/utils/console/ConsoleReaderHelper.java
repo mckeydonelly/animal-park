@@ -5,6 +5,8 @@ import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.NonBlockingReader;
+import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.*;
 
 import java.io.IOException;
 
@@ -25,6 +27,7 @@ public class ConsoleReaderHelper {
                     .terminal(terminal)
                     .build();
         } catch (IOException e) {
+            System.out.println(colorize("Ошибка при инициализации консоли", RED_TEXT(), NONE()));
             throw new RuntimeException(e);
         }
     }
@@ -32,11 +35,11 @@ public class ConsoleReaderHelper {
     private ConsoleReaderHelper() {
     }
 
-    public static synchronized NonBlockingReader getReader() {
+    public static NonBlockingReader getReader() {
         return reader;
     }
 
-    public static synchronized LineReader getLineReader() {
+    public static LineReader getLineReader() {
         return lineReader;
     }
 
@@ -48,6 +51,7 @@ public class ConsoleReaderHelper {
                 System.out.print("\033\143");
             }
         } catch (Exception e) {
+            System.out.println(colorize("Ошибка при очистке консоли", RED_TEXT(), NONE()));
             throw new RuntimeException(e);
         }
     }

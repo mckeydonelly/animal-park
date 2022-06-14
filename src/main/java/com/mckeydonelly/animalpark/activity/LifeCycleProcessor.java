@@ -8,6 +8,7 @@ import com.mckeydonelly.animalpark.entities.animals.Animal;
 import com.mckeydonelly.animalpark.map.Location;
 import com.mckeydonelly.animalpark.map.ParkMap;
 import com.mckeydonelly.animalpark.map.Position;
+import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SettingsType;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
 
@@ -20,11 +21,19 @@ public class LifeCycleProcessor {
     private final ParkMap parkMap;
     private final EntityFactory entityFactory;
     private final SimulationSettings settings;
+    private final EatingProcessor eatingProcessor;
+    private final SettingsService settingsService;
 
-    public LifeCycleProcessor(ParkMap parkMap, EntityFactory entityFactory, SimulationSettings settings) {
+    public LifeCycleProcessor(ParkMap parkMap,
+                              EntityFactory entityFactory,
+                              SimulationSettings settings,
+                              EatingProcessor eatingProcessor,
+                              SettingsService settingsService) {
         this.parkMap = parkMap;
         this.entityFactory = entityFactory;
         this.settings = settings;
+        this.eatingProcessor = eatingProcessor;
+        this.settingsService = settingsService;
     }
 
     /**
@@ -84,7 +93,7 @@ public class LifeCycleProcessor {
         location.lockLocation();
 
         try {
-            Set<String> eatableList = EatingProcessor.getEatableList(entity);
+            Set<String> eatableList = eatingProcessor.getEatableList(entity);
             ArrayList<Entity> eatableEntities = location.getEntitiesOnLocationList().stream()
                     .filter(entityOnLoc -> eatableList.contains(entityOnLoc.getClass().getSimpleName()))
                     .collect(Collectors.toCollection(ArrayList::new));
@@ -92,12 +101,10 @@ public class LifeCycleProcessor {
             if (!eatableEntities.isEmpty()) {
                 int randomTarget = ThreadLocalRandom.current().nextInt(eatableEntities.size());
                 Entity targetEntity = eatableEntities.get(randomTarget);
-                if (!targetEntity.isDead()) {
-                    if (EatingProcessor.getEatResult(entity, targetEntity)) {
+                if (!targetEntity.isDead() && eatingProcessor.getEatResult(entity, targetEntity)) {
                         entity.setWeightEaten(Math.min(entity.getWeightEaten() + targetEntity.getWeight(), entity.getWeightEatToFill()));
                         targetEntity.die();
                         location.remove(targetEntity);
-                    }
                 }
             }
         } finally {
@@ -126,7 +133,9 @@ public class LifeCycleProcessor {
 
             if (partnerForReproduction != null) {
                 partnerForReproduction.setReadyToReproduction(false);
-                Entity childEntity = entityFactory.createEntity(entity.getClass().getSimpleName(), entity.getPosition());
+                Entity childEntity = entityFactory.createEntity(entity.getClass().getSimpleName(),
+                        settingsService.getAnimalByName(entity.getClass().getSimpleName()).getAnimalProperties(),
+                        entity.getPosition());
                 location.add(childEntity);
                 partnerForReproduction.setReadyToReproduction(false);
             }

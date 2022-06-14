@@ -12,17 +12,14 @@ import java.util.concurrent.ThreadLocalRandom;
  * Хранит и рассчитывает вероятность потребления пищи для животных.
  */
 public class EatingProcessor {
-    private static final Map<String, Map<String, Integer>> chanceMap;
-    public static final int MAX_CHANCE_VALUE = 100;
+    private final Map<String, Map<String, Integer>> chanceMap;
+    private static final int MAX_CHANCE_VALUE = 100;
 
-    static {
-        chanceMap = new HashMap<>();
-        SettingsService.getAnimalSettings()
+    public EatingProcessor(SettingsService settingsService) {
+        this.chanceMap = new HashMap<>();
+        settingsService.getAnimalSettings()
                 .getAnimals()
                 .forEach((name, values) -> chanceMap.put(name, values.getEatChance()));
-    }
-
-    private EatingProcessor() {
     }
 
     /**
@@ -31,7 +28,7 @@ public class EatingProcessor {
      * @param eaten животное, которое пытаются съесть.
      * @return вероятность потребления пищи для животного.
      */
-    public static boolean getEatResult(Entity eater, Entity eaten) {
+    public boolean getEatResult(Entity eater, Entity eaten) {
         int eaterChance = chanceMap.get(eater.getClass().getSimpleName()).get(eaten.getClass().getSimpleName());
 
         if (eaterChance == 0) {
@@ -46,7 +43,7 @@ public class EatingProcessor {
      * @param eater животное, которое потребляет пищу.
      * @return список типов животных, которых оно может съесть.
      */
-    public static Set<String> getEatableList(Entity eater) {
+    public Set<String> getEatableList(Entity eater) {
         return new HashSet<>(chanceMap.get(eater.getClass().getSimpleName()).keySet());
     }
 }

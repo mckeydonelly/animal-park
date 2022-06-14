@@ -37,6 +37,7 @@ public class IngameMenuListener implements Runnable {
                     default -> System.out.print("\r");
                 }
             } catch (IOException e) {
+                System.out.println(colorize("Ошибка при чтении команды", RED_TEXT(), NONE()));
                 throw new RuntimeException(e);
             }
         }
@@ -93,6 +94,7 @@ public class IngameMenuListener implements Runnable {
                     activityProcessor.unPause();
                 }
             } catch (IOException e) {
+                System.out.println(colorize("Ошибка при чтении команды", RED_TEXT(), NONE()));
                 throw new RuntimeException(e);
             }
         }

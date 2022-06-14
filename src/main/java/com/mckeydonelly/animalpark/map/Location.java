@@ -3,6 +3,7 @@ package com.mckeydonelly.animalpark.map;
 import com.mckeydonelly.animalpark.entities.Entity;
 import com.mckeydonelly.animalpark.entities.EntityFactory;
 import com.mckeydonelly.animalpark.settings.SettingsService;
+import com.mckeydonelly.animalpark.settings.animal.Animal;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,16 +14,18 @@ import java.util.concurrent.locks.ReentrantLock;
  * Локация на карте.
  */
 public class Location {
-    private final List<Entity> entitiesOnLocationList = Collections.synchronizedList(new ArrayList<>());
+    private final List<Entity> entitiesOnLocationList = new ArrayList<>();
     private final Map<String, Integer> uniqueEntitiesCount = new ConcurrentHashMap<>();
     private final Position position;
+    private final SettingsService settingsService;
     private final Lock lock = new ReentrantLock(true);
 
-    public Location(Position position) {
+    public Location(Position position, SettingsService settingsService) {
         this.position = position;
+        this.settingsService = settingsService;
     }
 
-    public synchronized List<Entity> getEntitiesOnLocationList() {
+    public List<Entity> getEntitiesOnLocationList() {
         return entitiesOnLocationList;
     }
 
@@ -42,12 +45,12 @@ public class Location {
     public void fill(EntityFactory entityFactory) {
         Random randomEntityIndex = new Random();
 
-        List<String> entityTypes = new ArrayList<>(SettingsService.getAnimalSettings().getAnimals().keySet());
-        int entityTypesCount = SettingsService.getAnimalSettings().getAnimals().size();
+        List<String> entityTypes = new ArrayList<>(settingsService.getAnimalSettings().getAnimals().keySet());
+        int entityTypesCount = settingsService.getAnimalSettings().getAnimals().size();
 
         for (int index = 0; index <= entityTypesCount; index++) {
             String entityType = entityTypes.get(randomEntityIndex.nextInt(entityTypesCount));
-            Entity entity = entityFactory.createEntity(entityType, position);
+            Entity entity = entityFactory.createEntity(entityType, settingsService.getAnimalByName(entityType).getAnimalProperties(), position);
             add(entity);
         }
     }
@@ -111,7 +114,7 @@ public class Location {
      * Проверяет на превышение лимита уникальных сущностей.
      */
     private boolean checkMaxCountEntities(String entityName, int countUniqueEntityOnLocation) {
-        return countUniqueEntityOnLocation <= SettingsService.getAnimalSettings().getAnimals().get(entityName).getMaxByLocation() - 1;
+        return countUniqueEntityOnLocation <= settingsService.getAnimalSettings().getAnimals().get(entityName).getMaxByLocation() - 1;
     }
 
     @Override
@@ -126,7 +129,7 @@ public class Location {
         result.append("[");
 
         if (uniqueEntitiesCount.size() > 0) {
-            SettingsService.getAnimalSettings()
+            settingsService.getAnimalSettings()
                     .getAnimals().forEach((key, value) -> result
                             .append(value.getEmoji())
                             .append("=")

@@ -12,7 +12,7 @@ public abstract class AnimalImpl implements Animal {
     private final double weightEatToFill;
     protected Position positionOnMap;
     private double weightEaten;
-    private boolean dead;
+    private volatile boolean dead;
     private volatile boolean readyToReproduction;
 
     protected AnimalImpl(Position position, AnimalProperties animalProperties) {

@@ -2,12 +2,14 @@ package com.mckeydonelly.animalpark.park;
 
 import com.mckeydonelly.animalpark.activity.ActivityProcessor;
 import com.mckeydonelly.animalpark.activity.LifeCycleProcessor;
+import com.mckeydonelly.animalpark.entities.EatingProcessor;
 import com.mckeydonelly.animalpark.entities.EntityFactory;
 import com.mckeydonelly.animalpark.entities.EntityFactoryImpl;
 import com.mckeydonelly.animalpark.map.MapProcessor;
 import com.mckeydonelly.animalpark.map.ParkMap;
 import com.mckeydonelly.animalpark.menu.IngameMenu;
 import com.mckeydonelly.animalpark.menu.StartMenu;
+import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
 import com.mckeydonelly.animalpark.utils.StatisticProcessor;
 
@@ -15,16 +17,20 @@ import com.mckeydonelly.animalpark.utils.StatisticProcessor;
  * Основной класс для запуска процессов симуляции.
  */
 public class Park {
+    private final SettingsService settingsService;
+    private final EntityFactory entityFactory;
     private final MapProcessor mapProcessor;
+    private final EatingProcessor eatingProcessor;
     private final StartMenu startMenu;
     private final StatisticProcessor statisticProcessor;
-    private final EntityFactory entityFactory;
 
     public Park() {
-        this.mapProcessor = new MapProcessor();
-        this.startMenu = new StartMenu();
-        this.statisticProcessor = new StatisticProcessor(new IngameMenu());
+        this.settingsService = new SettingsService();
         this.entityFactory = new EntityFactoryImpl();
+        this.mapProcessor = new MapProcessor(settingsService);
+        this.eatingProcessor = new EatingProcessor(settingsService);
+        this.startMenu = new StartMenu(settingsService);
+        this.statisticProcessor = new StatisticProcessor(new IngameMenu(), settingsService);
     }
 
     public void start() {
@@ -32,11 +38,16 @@ public class Park {
         SimulationSettings settings = startMenu.start();
 
         ParkMap parkMap = mapProcessor.create(settings);
-        LifeCycleProcessor lifeCycleProcessor = new LifeCycleProcessor(parkMap, entityFactory, settings);
+        LifeCycleProcessor lifeCycleProcessor = new LifeCycleProcessor(parkMap,
+                entityFactory,
+                settings,
+                eatingProcessor,
+                settingsService);
 
         ActivityProcessor activityProcessor = new ActivityProcessor(parkMap,
                 statisticProcessor,
                 lifeCycleProcessor,
+                settingsService,
                 settings);
         activityProcessor.start();
     }

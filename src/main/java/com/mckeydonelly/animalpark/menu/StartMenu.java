@@ -17,6 +17,11 @@ import static com.diogonunes.jcolor.Attribute.*;
 public class StartMenu {
     private final NonBlockingReader reader = ConsoleReaderHelper.getReader();
     private final LineReader lineReader = ConsoleReaderHelper.getLineReader();
+    private final SettingsService settingsService;
+
+    public StartMenu(SettingsService settingsService) {
+        this.settingsService = settingsService;
+    }
 
 
     public SimulationSettings start() {
@@ -31,12 +36,13 @@ public class StartMenu {
             try {
                 command = reader.read();
                 switch (command) {
-                    case 's' -> settings = SettingsService.getDefaultSettings();
+                    case 's' -> settings = settingsService.getDefaultSettings();
                     case 'c' -> settings = manualConfiguration(settings, lineReader);
                     case 'q' -> System.exit(0);
                     default -> System.out.print("\r");
                 }
             } catch (IOException e) {
+                System.out.println(colorize("Ошибка при чтении команды", RED_TEXT(), NONE()));
                 throw new RuntimeException(e);
             }
         }
@@ -91,6 +97,7 @@ public class StartMenu {
                     return;
                 }
             } catch (IOException e) {
+                System.out.println(colorize("Ошибка при чтении команды", RED_TEXT(), NONE()));
                 throw new RuntimeException(e);
             }
         }

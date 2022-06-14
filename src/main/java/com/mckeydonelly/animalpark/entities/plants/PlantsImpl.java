@@ -8,7 +8,7 @@ import com.mckeydonelly.animalpark.settings.animal.AnimalProperties;
  */
 public class PlantsImpl implements Plants {
     private final double weight;
-    private boolean dead;
+    private volatile boolean dead;
 
     public PlantsImpl(AnimalProperties animalProperties) {
         this.weight = animalProperties.getWeight();

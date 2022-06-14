@@ -12,21 +12,21 @@ import java.util.Properties;
 /**
  * Сервис обработки настроек приложения и сущностей.
  */
-
 public class SettingsService {
     private static final String APP_SETTINGS_PATH = "app.properties";
     private static final String ANIMAL_SETTINGS_PATH = "animal-settings.yaml";
-    private static final Properties appSettings = new Properties();
-    private static final AnimalSettings animalSettings = initAnimalSettings();
+    private final Properties appSettings;
+    private final AnimalSettings animalSettings;
 
-    private SettingsService() {
-
+    public SettingsService() {
+        this.animalSettings = initAnimalSettings();
+        this.appSettings = new Properties();
     }
 
     /**
      * Инициализация настроек приложения из properties файла в случае запуска с дефолтными настройками.
      */
-    public static SimulationSettings getDefaultSettings() {
+    public SimulationSettings getDefaultSettings() {
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(APP_SETTINGS_PATH)) {
             appSettings.load(inputStream);
         } catch (IOException e) {
@@ -47,7 +47,7 @@ public class SettingsService {
      * Инициализация настроек животных из YAML файла.
      * @return настройки животных.
      */
-    private static AnimalSettings initAnimalSettings() {
+    private AnimalSettings initAnimalSettings() {
         ObjectMapper mapper = new YAMLMapper();
         AnimalSettings tmpAnimalSettings = null;
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(ANIMAL_SETTINGS_PATH)) {
@@ -63,7 +63,7 @@ public class SettingsService {
      * @param name - имя животного.
      * @return настройки животного.
      */
-    public static Animal getAnimalByName(String name) {
+    public Animal getAnimalByName(String name) {
         return animalSettings.getAnimals().get(name);
     }
 
@@ -71,7 +71,7 @@ public class SettingsService {
      * Получение настроек животных
      * @return настройки животных.
      */
-    public static AnimalSettings getAnimalSettings() {
+    public AnimalSettings getAnimalSettings() {
         return animalSettings;
     }
 }
