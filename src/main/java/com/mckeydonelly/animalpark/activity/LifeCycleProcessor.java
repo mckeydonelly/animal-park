@@ -42,6 +42,9 @@ public class LifeCycleProcessor {
      * @param entity животное
      */
     public void doTurn(Entity entity) {
+        if(entity.isDead()) {
+            return;
+        }
 
         if (!(entity instanceof Animal)) {
             return;
