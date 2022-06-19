@@ -29,7 +29,7 @@ class SettingsServiceTest {
 
     @Test
     void testGetAnimalByName() {
-        Animal animal = settingsService.getAnimalByName("wolf");
+        Animal animal = settingsService.getAnimalByName("Wolf");
         assertNotNull(animal);
     }
 
