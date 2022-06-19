@@ -58,7 +58,7 @@ Start simulation with parameters:
 Parameter: count map rows (number) - 100
 Parameter: count map columns (number) - 20
 Parameter: turns count (number) - 1000
-Parameter: turns for die (entity loses every turn of "maximum food / turns for die" (number) - 3
+Parameter: turns for die (unit loses every turn of "maximum food / turns for die" (number) - 3
 Parameter: statistics update frequency (ms) - 100
 Parameter: the frequency of the task of growing new plants (ms) - 500
 

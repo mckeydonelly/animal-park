@@ -2,8 +2,8 @@ package com.mckeydonelly.animalpark.activity;
 
 import com.mckeydonelly.animalpark.entities.ActionTypes;
 import com.mckeydonelly.animalpark.entities.EatingProcessor;
-import com.mckeydonelly.animalpark.entities.Entity;
-import com.mckeydonelly.animalpark.entities.EntityFactory;
+import com.mckeydonelly.animalpark.entities.Unit;
+import com.mckeydonelly.animalpark.entities.UnitFactory;
 import com.mckeydonelly.animalpark.entities.animals.Animal;
 import com.mckeydonelly.animalpark.map.Location;
 import com.mckeydonelly.animalpark.map.ParkMap;
@@ -19,18 +19,18 @@ import java.util.stream.Collectors;
 
 public class LifeCycleProcessor {
     private final ParkMap parkMap;
-    private final EntityFactory entityFactory;
+    private final UnitFactory unitFactory;
     private final SimulationSettings settings;
     private final EatingProcessor eatingProcessor;
     private final SettingsService settingsService;
 
     public LifeCycleProcessor(ParkMap parkMap,
-                              EntityFactory entityFactory,
+                              UnitFactory unitFactory,
                               SimulationSettings settings,
                               EatingProcessor eatingProcessor,
                               SettingsService settingsService) {
         this.parkMap = parkMap;
-        this.entityFactory = entityFactory;
+        this.unitFactory = unitFactory;
         this.settings = settings;
         this.eatingProcessor = eatingProcessor;
         this.settingsService = settingsService;
@@ -39,33 +39,33 @@ public class LifeCycleProcessor {
     /**
      * Выполняет ход животного
      *
-     * @param entity животное
+     * @param unit животное
      */
-    public void doTurn(Entity entity) {
-        if(entity.isDead()) {
+    public void doTurn(Unit unit) {
+        if(unit.isDead()) {
             return;
         }
 
-        if (!(entity instanceof Animal)) {
+        if (!(unit instanceof Animal)) {
             return;
         }
 
-        Location currentLocation = parkMap.getLocation(entity.getPosition().row(), entity.getPosition().column());
+        Location currentLocation = parkMap.getLocation(unit.getPosition().row(), unit.getPosition().column());
 
         int availableTypes = ActionTypes.values().length;
-        if (entity.getWeightEaten() >= entity.getWeightEatToFill()) {
+        if (unit.getWeightEaten() >= unit.getWeightEatToFill()) {
             availableTypes = availableTypes - 1;
         }
 
         int actionType = ThreadLocalRandom.current().nextInt(availableTypes);
 
         switch (ActionTypes.values()[actionType]) {
-            case MOVE -> move(entity, parkMap);
-            case REPRODUCTION -> reproduction(entity, currentLocation);
-            case EAT -> eat(entity, currentLocation);
+            case MOVE -> move(unit, parkMap);
+            case REPRODUCTION -> reproduction(unit, currentLocation);
+            case EAT -> eat(unit, currentLocation);
         }
 
-        reducePower(entity, currentLocation);
+        reducePower(unit, currentLocation);
     }
 
     /**
@@ -73,13 +73,13 @@ public class LifeCycleProcessor {
      *
      * @param location Текущая локация на карте
      */
-    private void reducePower(Entity entity, Location location) {
-        entity.setWeightEaten(entity.getWeightEaten() - (entity.getWeightEatToFill() / settings.get(SettingsType.TURNS_FOR_DIE_BY_MAX_FILL)));
-        if (entity.getWeightEaten() <= 0) {
+    private void reducePower(Unit unit, Location location) {
+        unit.setWeightEaten(unit.getWeightEaten() - (unit.getWeightEatToFill() / settings.get(SettingsType.TURNS_FOR_DIE_BY_MAX_FILL)));
+        if (unit.getWeightEaten() <= 0) {
             location.lockLocation();
             try {
-                entity.die();
-                location.remove(entity);
+                unit.die();
+                location.remove(unit);
             } finally {
                 location.unlockLocation();
             }
@@ -89,25 +89,25 @@ public class LifeCycleProcessor {
     /**
      * Существо ест
      *
-     * @param entity   животное
+     * @param unit   животное
      * @param location Локация для поиска еды
      */
-    public void eat(Entity entity, Location location) {
+    public void eat(Unit unit, Location location) {
         location.lockLocation();
 
         try {
-            Set<String> eatableList = eatingProcessor.getEatableList(entity);
-            ArrayList<Entity> eatableEntities = location.getEntitiesOnLocationList().stream()
+            Set<String> eatableList = eatingProcessor.getEatableList(unit);
+            ArrayList<Unit> eatableEntities = location.getEntitiesOnLocationList().stream()
                     .filter(entityOnLoc -> eatableList.contains(entityOnLoc.getClass().getSimpleName()))
                     .collect(Collectors.toCollection(ArrayList::new));
 
             if (!eatableEntities.isEmpty()) {
                 int randomTarget = ThreadLocalRandom.current().nextInt(eatableEntities.size());
-                Entity targetEntity = eatableEntities.get(randomTarget);
-                if (!targetEntity.isDead() && eatingProcessor.getEatResult(entity, targetEntity)) {
-                        entity.setWeightEaten(Math.min(entity.getWeightEaten() + targetEntity.getWeight(), entity.getWeightEatToFill()));
-                        targetEntity.die();
-                        location.remove(targetEntity);
+                Unit targetUnit = eatableEntities.get(randomTarget);
+                if (!targetUnit.isDead() && eatingProcessor.getEatResult(unit, targetUnit)) {
+                        unit.setWeightEaten(Math.min(unit.getWeightEaten() + targetUnit.getWeight(), unit.getWeightEatToFill()));
+                        targetUnit.die();
+                        location.remove(targetUnit);
                 }
             }
         } finally {
@@ -118,28 +118,28 @@ public class LifeCycleProcessor {
     /**
      * Существо размножается
      *
-     * @param entity   животное
+     * @param unit   животное
      * @param location Локация для поиска существа для размножения
      */
-    public void reproduction(Entity entity, Location location) {
-        if (!entity.isReadyToReproduction()) {
+    public void reproduction(Unit unit, Location location) {
+        if (!unit.isReadyToReproduction()) {
             return;
         }
 
         location.lockLocation();
 
         try {
-            Entity partnerForReproduction = location.getEntitiesOnLocationList().stream()
-                    .filter(entityOnLoc -> entityOnLoc.getClass().equals(entity.getClass()))
+            Unit partnerForReproduction = location.getEntitiesOnLocationList().stream()
+                    .filter(entityOnLoc -> entityOnLoc.getClass().equals(unit.getClass()))
                     .findAny()
                     .orElse(null);
 
             if (partnerForReproduction != null) {
                 partnerForReproduction.setReadyToReproduction(false);
-                Entity childEntity = entityFactory.createEntity(entity.getClass().getSimpleName(),
-                        settingsService.getAnimalByName(entity.getClass().getSimpleName()).getAnimalProperties(),
-                        entity.getPosition());
-                location.add(childEntity);
+                Unit childUnit = unitFactory.createUnit(unit.getClass().getSimpleName(),
+                        settingsService.getAnimalByName(unit.getClass().getSimpleName()).getAnimalProperties(),
+                        unit.getPosition());
+                location.add(childUnit);
                 partnerForReproduction.setReadyToReproduction(false);
             }
         } finally {
@@ -150,13 +150,13 @@ public class LifeCycleProcessor {
     /**
      * Существо перемещается
      *
-     * @param entity  животное
+     * @param unit  животное
      * @param parkMap Карта парка
      */
-    public void move(Entity entity, ParkMap parkMap) {
-        Location currentLocation = parkMap.getLocation(entity.getPosition().row(), entity.getPosition().column());
+    public void move(Unit unit, ParkMap parkMap) {
+        Location currentLocation = parkMap.getLocation(unit.getPosition().row(), unit.getPosition().column());
         Location endLocation = currentLocation;
-        int stepsToMove = entity.getMoveSpeed();
+        int stepsToMove = unit.getMoveSpeed();
 
         while (stepsToMove > 0) {
             int directionIndex = ThreadLocalRandom.current().nextInt(Direction.values().length);
@@ -171,19 +171,19 @@ public class LifeCycleProcessor {
         if (currentLocation != endLocation) {
             currentLocation.lockLocation();
             try {
-                currentLocation.remove(entity);
+                currentLocation.remove(unit);
             } finally {
                 currentLocation.unlockLocation();
             }
 
             endLocation.lockLocation();
             try {
-                endLocation.add(entity);
+                endLocation.add(unit);
             } finally {
                 endLocation.unlockLocation();
             }
 
-            entity.setPosition(endLocation.getPosition());
+            unit.setPosition(endLocation.getPosition());
         }
     }
 
@@ -206,16 +206,34 @@ public class LifeCycleProcessor {
             case RIGHT -> new Position(currentRow, currentColumn + 1);
         };
 
-        if (nextPosition.column() >= settings.get(SettingsType.MAP_COLUMNS) ||
-                nextPosition.column() < 0 ||
-                nextPosition.row() >= settings.get(SettingsType.MAP_ROWS) ||
-                nextPosition.row() < 0) {
+        if (isEndOfMapByColumn(nextPosition.column()) || isEndOfMapByRow(nextPosition.row())) {
             return currentLocation;
         } else {
             return parkMap.getLocation(nextPosition.row(), nextPosition.column());
         }
     }
 
+    /**
+     * Проверяет, что столбец следующей локации при перемещении на карте парка не выходит за пределы карты
+     * @param column Столбец для проверки
+     * @return Возможность перемещения
+     */
+    private boolean isEndOfMapByColumn(int column) {
+        return column >= settings.get(SettingsType.MAP_COLUMNS) || column < 0;
+    }
+
+    /**
+     * Проверяет, что строка следующей локации при перемещении на карте парка не выходит за пределы карты
+     * @param row Строка для проверки
+     * @return Возможность перемещения
+     */
+    private boolean isEndOfMapByRow(int row) {
+        return row >= settings.get(SettingsType.MAP_ROWS) || row < 0;
+    }
+
+    /**
+     * Перечисление направлений движения
+     */
     enum Direction {
         DOWN,
         UP,

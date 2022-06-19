@@ -1,9 +1,8 @@
 package com.mckeydonelly.animalpark.map;
 
-import com.mckeydonelly.animalpark.entities.Entity;
-import com.mckeydonelly.animalpark.entities.EntityFactory;
+import com.mckeydonelly.animalpark.entities.Unit;
+import com.mckeydonelly.animalpark.entities.UnitFactory;
 import com.mckeydonelly.animalpark.settings.SettingsService;
-import com.mckeydonelly.animalpark.settings.animal.Animal;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Локация на карте.
  */
 public class Location {
-    private final List<Entity> entitiesOnLocationList = new ArrayList<>();
+    private final List<Unit> entitiesOnLocationList = new ArrayList<>();
     private final Map<String, Integer> uniqueEntitiesCount = new ConcurrentHashMap<>();
     private final Position position;
     private final SettingsService settingsService;
@@ -25,7 +24,7 @@ public class Location {
         this.settingsService = settingsService;
     }
 
-    public List<Entity> getEntitiesOnLocationList() {
+    public List<Unit> getEntitiesOnLocationList() {
         return entitiesOnLocationList;
     }
 
@@ -40,9 +39,9 @@ public class Location {
     /**
      * Заполняет локацию новыми сущностями.
      *
-     * @param entityFactory Фабрика сущностей.
+     * @param unitFactory Фабрика сущностей.
      */
-    public void fill(EntityFactory entityFactory) {
+    public void fill(UnitFactory unitFactory) {
         Random randomEntityIndex = new Random();
 
         List<String> entityTypes = new ArrayList<>(settingsService.getAnimalSettings().getAnimals().keySet());
@@ -50,8 +49,8 @@ public class Location {
 
         for (int index = 0; index <= entityTypesCount; index++) {
             String entityType = entityTypes.get(randomEntityIndex.nextInt(entityTypesCount));
-            Entity entity = entityFactory.createEntity(entityType, settingsService.getAnimalByName(entityType).getAnimalProperties(), position);
-            add(entity);
+            Unit unit = unitFactory.createUnit(entityType, settingsService.getAnimalByName(entityType).getAnimalProperties(), position);
+            add(unit);
         }
     }
 
@@ -66,33 +65,33 @@ public class Location {
     /**
      * Добавляет сущность на локацию.
      *
-     * @param entity Сущность.
+     * @param unit Сущность.
      */
-    public void add(Entity entity) {
-        if (changeUniqueEntities(entity, false)) {
-            entitiesOnLocationList.add(entity);
+    public void add(Unit unit) {
+        if (changeUniqueEntities(unit, false)) {
+            entitiesOnLocationList.add(unit);
         }
     }
 
     /**
      * Удаляет сущность с локации.
      *
-     * @param entity Сущность.
+     * @param unit Сущность.
      */
-    public void remove(Entity entity) {
-        changeUniqueEntities(entity, true);
-        entitiesOnLocationList.remove(entity);
+    public void remove(Unit unit) {
+        changeUniqueEntities(unit, true);
+        entitiesOnLocationList.remove(unit);
     }
 
     /**
      * Изменяет счетчик с лимитами уникальных сущностей.
      *
-     * @param entity Сущность.
+     * @param unit Сущность.
      * @param leave  Признак выхода или смерти сущности из локации.
      * @return Признак успешного изменения счетчика.
      */
-    public boolean changeUniqueEntities(Entity entity, boolean leave) {
-        String entityName = entity.getClass().getSimpleName();
+    public boolean changeUniqueEntities(Unit unit, boolean leave) {
+        String entityName = unit.getClass().getSimpleName();
 
         int countUniqueEntityOnLocation = uniqueEntitiesCount.getOrDefault(entityName, 0);
 

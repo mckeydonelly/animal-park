@@ -9,11 +9,11 @@ import com.mckeydonelly.animalpark.settings.animal.AnimalProperties;
 /**
  * Фабрика для создания сущностей
  */
-public class EntityFactoryImpl implements EntityFactory {
+public class UnitFactoryImpl implements UnitFactory {
 
     @Override
-    public Entity createEntity(String entityType, AnimalProperties animalProperties, Position position) {
-        return switch (entityType) {
+    public Unit createUnit(String unitType, AnimalProperties animalProperties, Position position) {
+        return switch (unitType) {
             case "Bear" -> new Bear(position, animalProperties);
             case "Eagle" -> new Eagle(position, animalProperties);
             case "Fox" -> new Fox(position, animalProperties);
@@ -30,7 +30,7 @@ public class EntityFactoryImpl implements EntityFactory {
             case "Rabbit" -> new Rabbit(position, animalProperties);
             case "Sheep" -> new Sheep(position, animalProperties);
             case "Bush" -> new Bush(animalProperties);
-            default -> throw new IllegalArgumentException("Unknown entity type: " + entityType);
+            default -> throw new IllegalArgumentException("Unknown unit type: " + unitType);
         };
     }
 }

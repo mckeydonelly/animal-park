@@ -1,6 +1,6 @@
 package com.mckeydonelly.animalpark.entities.plants;
 
-import com.mckeydonelly.animalpark.entities.Entity;
+import com.mckeydonelly.animalpark.entities.Unit;
 
-public interface Plants extends Entity {
+public interface Plants extends Unit {
 }

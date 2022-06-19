@@ -8,7 +8,7 @@ public enum SettingsType {
     MAP_ROWS("app.map.rows", "count map rows (number)"),
     MAP_COLUMNS("app.map.columns", "count map columns (number)"),
     TURNS_COUNT("app.turnsCount", "turns count (number)"),
-    TURNS_FOR_DIE_BY_MAX_FILL("app.turnForDieByMaxFill", "turns for die (entity loses every turn of \"maximum food / turns for die\" (number)"),
+    TURNS_FOR_DIE_BY_MAX_FILL("app.turnForDieByMaxFill", "turns for die (units loses every turn of \"maximum food / turns for die\" (number)"),
     STATISTIC_UPDATE_FREQUENCY("app.statisticUpdateFrequency", "statistics update frequency (ms)"),
     GROW_PLANTS_FREQUENCY("app.growPlantsFrequency", "the frequency of the task of growing new plants (ms)");
 

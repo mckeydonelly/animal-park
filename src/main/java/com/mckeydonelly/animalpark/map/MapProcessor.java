@@ -1,21 +1,19 @@
 package com.mckeydonelly.animalpark.map;
 
-import com.mckeydonelly.animalpark.entities.EntityFactory;
-import com.mckeydonelly.animalpark.entities.EntityFactoryImpl;
+import com.mckeydonelly.animalpark.entities.UnitFactory;
+import com.mckeydonelly.animalpark.entities.UnitFactoryImpl;
 import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SettingsType;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
-import com.mckeydonelly.animalpark.settings.animal.Animal;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Создает и заполняет карту начальными значениями по заданным настройкам.
  */
 public class MapProcessor {
-    private final EntityFactory entityFactory = new EntityFactoryImpl();
+    private final UnitFactory unitFactory = new UnitFactoryImpl();
     private final SettingsService settingsService;
 
     public MapProcessor(SettingsService settingsService) {
@@ -58,6 +56,6 @@ public class MapProcessor {
         parkMap.getMap().stream()
                 .flatMap(List::stream)
                 .toList()
-                .forEach(location -> location.fill(entityFactory));
+                .forEach(location -> location.fill(unitFactory));
     }
 }

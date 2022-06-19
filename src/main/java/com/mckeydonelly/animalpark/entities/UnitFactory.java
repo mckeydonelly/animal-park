@@ -6,6 +6,6 @@ import com.mckeydonelly.animalpark.settings.animal.AnimalProperties;
 /**
  * Интерфейс для создания сущностей.
  */
-public interface EntityFactory {
-    Entity createEntity(String entityType, AnimalProperties animalProperties, Position position);
+public interface UnitFactory {
+    Unit createUnit(String entityType, AnimalProperties animalProperties, Position position);
 }

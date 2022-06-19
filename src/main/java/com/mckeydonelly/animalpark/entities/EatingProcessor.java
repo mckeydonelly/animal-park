@@ -28,7 +28,7 @@ public class EatingProcessor {
      * @param eaten животное, которое пытаются съесть.
      * @return вероятность потребления пищи для животного.
      */
-    public boolean getEatResult(Entity eater, Entity eaten) {
+    public boolean getEatResult(Unit eater, Unit eaten) {
         int eaterChance = chanceMap.get(eater.getClass().getSimpleName()).get(eaten.getClass().getSimpleName());
 
         if (eaterChance == 0) {
@@ -43,7 +43,7 @@ public class EatingProcessor {
      * @param eater животное, которое потребляет пищу.
      * @return список типов животных, которых оно может съесть.
      */
-    public Set<String> getEatableList(Entity eater) {
+    public Set<String> getEatableList(Unit eater) {
         return new HashSet<>(chanceMap.get(eater.getClass().getSimpleName()).keySet());
     }
 }

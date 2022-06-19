@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.mckeydonelly.animalpark.settings.animal.Animal;
 import com.mckeydonelly.animalpark.settings.animal.AnimalSettings;
+import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,14 +32,35 @@ public class SettingsService {
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(APP_SETTINGS_PATH)) {
             appSettings.load(inputStream);
         } catch (IOException e) {
-            System.out.println("Can't find properties file by path: " + APP_SETTINGS_PATH);
+            System.out.println(colorize("Can't find properties file by path: " + APP_SETTINGS_PATH, RED_TEXT(), NONE()));
             System.exit(1);
         }
 
         SimulationSettings settings = new SimulationSettings();
 
         for (SettingsType settingsType : SettingsType.values()) {
-            settings.add(settingsType, Integer.valueOf(appSettings.getProperty(settingsType.getTypeCode())));
+            String settingsProperty = appSettings.getProperty(settingsType.getTypeCode());
+            if (settingsProperty == null) {
+                throw new IllegalArgumentException(colorize("Can't find property: "
+                        + settingsType.getTypeCode()
+                        + " in properties file: "
+                        + APP_SETTINGS_PATH
+                        + ". Please check your properties file.", RED_TEXT(), NONE()));
+            }
+
+            int settingsValue = 0;
+            try {
+                settingsValue = Integer.parseInt(settingsProperty);
+            } catch (NumberFormatException e) {
+                throw new NumberFormatException(colorize("Property: "
+                        + settingsType.getTypeCode()
+                        + " is not an integer"
+                        + " in properties file: "
+                        + APP_SETTINGS_PATH
+                        + ". Please check your properties file.", RED_TEXT(), NONE()));
+            }
+
+            settings.add(settingsType, settingsValue);
         }
 
         return settings;
@@ -45,6 +68,7 @@ public class SettingsService {
 
     /**
      * Инициализация настроек животных из YAML файла.
+     *
      * @return настройки животных.
      */
     private AnimalSettings initAnimalSettings() {
@@ -53,13 +77,16 @@ public class SettingsService {
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(ANIMAL_SETTINGS_PATH)) {
             tmpAnimalSettings = mapper.readValue(inputStream, AnimalSettings.class);
         } catch (IOException e) {
+            System.out.println(colorize("Can't find or read properties file for animals by path: " + ANIMAL_SETTINGS_PATH, RED_TEXT(), NONE()));
             e.printStackTrace();
+            System.exit(1);
         }
         return tmpAnimalSettings;
     }
 
     /**
      * Получение настроек животного по имени.
+     *
      * @param name - имя животного.
      * @return настройки животного.
      */
@@ -69,6 +96,7 @@ public class SettingsService {
 
     /**
      * Получение настроек животных
+     *
      * @return настройки животных.
      */
     public AnimalSettings getAnimalSettings() {

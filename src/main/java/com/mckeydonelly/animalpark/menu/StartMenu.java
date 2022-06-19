@@ -25,13 +25,12 @@ public class StartMenu {
 
 
     public SimulationSettings start() {
+        SimulationSettings settings = settingsService.getDefaultSettings();
+
         String menu = "\ns - start with default parameters\nc - manual configuration\nq - quit";
         System.out.println(menu);
 
         int command = 0;
-
-        SimulationSettings settings = settingsService.getDefaultSettings();
-
         while (command != 's' && command != 'c') {
             try {
                 command = reader.read();

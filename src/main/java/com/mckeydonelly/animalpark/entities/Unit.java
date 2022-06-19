@@ -5,7 +5,7 @@ import com.mckeydonelly.animalpark.map.Position;
 /**
  * Базовый интерфейс для всех сущностей.
  */
-public interface Entity {
+public interface Unit {
     double getWeight();
 
     Position getPosition();

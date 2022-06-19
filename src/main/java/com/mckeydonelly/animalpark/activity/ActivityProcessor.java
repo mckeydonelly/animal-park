@@ -1,6 +1,6 @@
 package com.mckeydonelly.animalpark.activity;
 
-import com.mckeydonelly.animalpark.entities.EntityFactory;
+import com.mckeydonelly.animalpark.entities.UnitFactory;
 import com.mckeydonelly.animalpark.entities.PlantsFactory;
 import com.mckeydonelly.animalpark.entities.animals.Animal;
 import com.mckeydonelly.animalpark.map.Location;
@@ -89,7 +89,7 @@ public class ActivityProcessor {
                     try {
                         location.getEntitiesOnLocationList().stream()
                                 .filter(Animal.class::isInstance)
-                                .forEach(entity -> entitiesTaskList.add(() -> lifeCycleProcessor.doTurn(entity)));
+                                .forEach(unit -> entitiesTaskList.add(() -> lifeCycleProcessor.doTurn(unit)));
                     } finally {
                         location.unlockLocation();
                     }
@@ -126,7 +126,7 @@ public class ActivityProcessor {
             for (Location location : locations) {
                 location.lockLocation();
                 try {
-                    location.getEntitiesOnLocationList().forEach(entity -> entity.setReadyToReproduction(true));
+                    location.getEntitiesOnLocationList().forEach(unit -> unit.setReadyToReproduction(true));
                 } finally {
                     location.unlockLocation();
                 }
@@ -144,14 +144,14 @@ public class ActivityProcessor {
             Thread.onSpinWait();
         }
 
-        EntityFactory entityFactory = new PlantsFactory();
+        UnitFactory unitFactory = new PlantsFactory();
         parkMap.getMap().stream()
                 .flatMap(List::stream)
                 .toList()
                 .forEach(location -> {
                     location.lockLocation();
                     try {
-                        location.fill(entityFactory);
+                        location.fill(unitFactory);
                     } finally {
                         location.unlockLocation();
                     }

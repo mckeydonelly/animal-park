@@ -7,9 +7,9 @@ import com.mckeydonelly.animalpark.settings.animal.AnimalProperties;
 /**
  * Фабрика генерации растений.
  */
-public class PlantsFactory implements EntityFactory {
+public class PlantsFactory implements UnitFactory {
     @Override
-    public Entity createEntity(String entityType, AnimalProperties animalProperties, Position position) {
+    public Unit createUnit(String entityType, AnimalProperties animalProperties, Position position) {
         return new Bush(animalProperties);
     }
 }
