@@ -26,7 +26,7 @@ public class ParkMap {
         try {
             return map.get(row).get(column);
         } catch (IndexOutOfBoundsException e) {
-            return null;
+            throw new IllegalArgumentException("Неверные координаты");
         }
     }
 }

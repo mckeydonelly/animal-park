@@ -19,9 +19,4 @@ public class Position {
     public int column() {
         return column;
     }
-
-    public void set(int row, int column) {
-        this.row = row;
-        this.column = column;
-    }
 }
