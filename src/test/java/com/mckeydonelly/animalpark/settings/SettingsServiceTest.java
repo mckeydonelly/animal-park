@@ -16,25 +16,25 @@ class SettingsServiceTest {
     }
 
     @Test
-    void testInitSettingService() {
+    void should_create_new_SettingService() {
         SettingsService testSettingsService = new SettingsService();
         assertNotNull(testSettingsService);
     }
 
     @Test
-    void testGetDefaultSettings() {
+    void should_success_GetDefaultSettings() {
         SimulationSettings settings = settingsService.getDefaultSettings();
         assertNotNull(settings);
     }
 
     @Test
-    void testGetAnimalByName() {
+    void should_success_GetAnimalByName() {
         Animal animal = settingsService.getAnimalByName("Wolf");
         assertNotNull(animal);
     }
 
     @Test
-    void testGetAnimalSettings() {
+    void should_success_GetAnimalSettings() {
         AnimalSettings animalSettings = settingsService.getAnimalSettings();
         assertNotNull(animalSettings);
     }

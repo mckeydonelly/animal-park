@@ -20,7 +20,7 @@ class SimulationSettingsTest {
     }
 
     @Test
-    void testAddAndGetSomeParamSettings() {
+    void should_add_and_get_param_settings() {
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(APP_SETTINGS_PATH)) {
             appSettings.load(inputStream);
         } catch (IOException e) {
