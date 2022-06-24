@@ -47,45 +47,7 @@ $ java -jar ./target/animal-park.jar
 - ```map``` - содержит классы для работы с картой  
 - ```activity``` - содержит классы для запуска жизни животных в многопоточном режиме  
 
-Пример ответа:
-```
-Welcome to animal park!
-s - start with default parameters
-c - manual configuration
-q - quit
+Пример работы приложения:
+![demo-animal-park](https://user-images.githubusercontent.com/10290445/175464988-e40f30af-f3ca-4593-8fbe-cd859a29ed79.gif)
 
-Start simulation with parameters:
-Parameter: count map rows (number) - 100
-Parameter: count map columns (number) - 20
-Parameter: turns count (number) - 1000
-Parameter: turns for die (unit loses every turn of "maximum food / turns for die" (number) - 3
-Parameter: statistics update frequency (ms) - 100
-Parameter: the frequency of the task of growing new plants (ms) - 500
-
-For continue press SPACE...
-
-------------------------------------------------------
-p - pause | g - get statistics for a specific cell | q - quit
-
-Turn - 10
-Total turns - 1000
-
-Population by type for all map:
-
-🐺=26687
-🐍=9786
 🦊=23859
-🐻=6204
-🦅=25064
-🐴=12423
-🦌=13015
-🐇=8700
-🐁=2604
-🐐=11589
-🐑=11094
-🐗=14550
-🦆=45159
-🐛=1425
-🦬=6523
-🌱=19703
-```
