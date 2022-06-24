@@ -49,5 +49,3 @@ $ java -jar ./target/animal-park.jar
 
 Пример работы приложения:
 ![demo-animal-park](https://user-images.githubusercontent.com/10290445/175464988-e40f30af-f3ca-4593-8fbe-cd859a29ed79.gif)
-
-🦊=23859
