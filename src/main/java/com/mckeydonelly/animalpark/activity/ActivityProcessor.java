@@ -9,7 +9,7 @@ import com.mckeydonelly.animalpark.menu.IngameMenuListener;
 import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SettingsType;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
-import com.mckeydonelly.animalpark.utils.StatisticProcessor;
+import com.mckeydonelly.animalpark.utils.StatisticService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +24,7 @@ public class ActivityProcessor {
     private final ExecutorService executorService = Executors.newWorkStealingPool();
     private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
     private final ParkMap parkMap;
-    private final StatisticProcessor statisticProcessor;
+    private final StatisticService statisticService;
     private final LifeCycleProcessor lifeCycleProcessor;
     private final SimulationSettings settings;
     private final SettingsService settingsService;
@@ -33,12 +33,12 @@ public class ActivityProcessor {
     private volatile boolean stop;
 
     public ActivityProcessor(ParkMap parkMap,
-                             StatisticProcessor statisticProcessor,
+                             StatisticService statisticService,
                              LifeCycleProcessor lifeCycleProcessor,
                              SettingsService settingsService,
                              SimulationSettings settings) {
         this.parkMap = parkMap;
-        this.statisticProcessor = statisticProcessor;
+        this.statisticService = statisticService;
         this.lifeCycleProcessor = lifeCycleProcessor;
         this.settingsService = settingsService;
         this.settings = settings;
@@ -57,7 +57,7 @@ public class ActivityProcessor {
             while (stop) {
                 Thread.onSpinWait();
             }
-            statisticProcessor.printStatistic(parkMap, startTurnsCount, startTurnsCount - turnsCount.get());
+            statisticService.printStatistic(parkMap, startTurnsCount, startTurnsCount - turnsCount.get());
         }, 0, settings.get(SettingsType.STATISTIC_UPDATE_FREQUENCY), TimeUnit.MILLISECONDS);
 
         scheduledExecutorService.scheduleWithFixedDelay(
@@ -159,7 +159,7 @@ public class ActivityProcessor {
     }
 
     private void shutdownActivity() {
-        statisticProcessor.printStatistic(parkMap, startTurnsCount, startTurnsCount - turnsCount.get());
+        statisticService.printStatistic(parkMap, startTurnsCount, startTurnsCount - turnsCount.get());
         executorService.shutdownNow();
         scheduledExecutorService.shutdownNow();
     }

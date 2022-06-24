@@ -12,11 +12,11 @@ import java.util.Map;
 /**
  * Вывод статистики по парку
  */
-public class StatisticProcessor {
+public class StatisticService {
     private final IngameMenu ingameMenu;
     private final SettingsService settingsService;
 
-    public StatisticProcessor(IngameMenu ingameMenu, SettingsService settingsService) {
+    public StatisticService(IngameMenu ingameMenu, SettingsService settingsService) {
         this.ingameMenu = ingameMenu;
         this.settingsService = settingsService;
     }

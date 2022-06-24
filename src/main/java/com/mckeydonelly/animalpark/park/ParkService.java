@@ -11,26 +11,26 @@ import com.mckeydonelly.animalpark.menu.IngameMenu;
 import com.mckeydonelly.animalpark.menu.StartMenu;
 import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
-import com.mckeydonelly.animalpark.utils.StatisticProcessor;
+import com.mckeydonelly.animalpark.utils.StatisticService;
 
 /**
  * Основной класс для запуска процессов симуляции.
  */
-public class Park {
+public class ParkService {
     private final SettingsService settingsService;
     private final UnitFactory unitFactory;
     private final MapProcessor mapProcessor;
     private final EatingProcessor eatingProcessor;
     private final StartMenu startMenu;
-    private final StatisticProcessor statisticProcessor;
+    private final StatisticService statisticService;
 
-    public Park() {
+    public ParkService() {
         this.settingsService = new SettingsService();
         this.unitFactory = new UnitFactoryImpl();
         this.mapProcessor = new MapProcessor(settingsService);
         this.eatingProcessor = new EatingProcessor(settingsService);
         this.startMenu = new StartMenu(settingsService);
-        this.statisticProcessor = new StatisticProcessor(new IngameMenu(), settingsService);
+        this.statisticService = new StatisticService(new IngameMenu(), settingsService);
     }
 
     public void start() {
@@ -45,7 +45,7 @@ public class Park {
                 settingsService);
 
         ActivityProcessor activityProcessor = new ActivityProcessor(parkMap,
-                statisticProcessor,
+                statisticService,
                 lifeCycleProcessor,
                 settingsService,
                 settings);

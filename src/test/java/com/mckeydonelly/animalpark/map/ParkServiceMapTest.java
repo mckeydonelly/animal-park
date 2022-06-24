@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ParkMapTest {
+class ParkServiceMapTest {
     private static ParkMap parkMap;
     private static SettingsService settingsService;
     private static int MAP_ROWS = 5;
