@@ -1,9 +1,9 @@
-package com.mckeydonelly.animalpark.settings.animal;
+package com.mckeydonelly.animalpark.settings.unit;
 
 /**
- * POJO класс для хранения базовых параметров животных
+ * POJO class for storing basic parameters of animals
  */
-public class AnimalProperties {
+public class UnitProperties {
     private int weight;
     private int moveSpeed;
     private double weightEatToFill;

@@ -5,13 +5,15 @@ import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 import org.jline.utils.NonBlockingReader;
-import static com.diogonunes.jcolor.Ansi.colorize;
-import static com.diogonunes.jcolor.Attribute.*;
 
 import java.io.IOException;
 
+import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.NONE;
+import static com.diogonunes.jcolor.Attribute.RED_TEXT;
+
 /**
- * Хелпер для работы с консолью.
+ * Helper for working with the console.
  */
 public class ConsoleReaderHelper {
     private static final Terminal terminal;
@@ -27,7 +29,7 @@ public class ConsoleReaderHelper {
                     .terminal(terminal)
                     .build();
         } catch (IOException e) {
-            System.out.println(colorize("Ошибка при инициализации консоли", RED_TEXT(), NONE()));
+            System.out.println(colorize("Console initialization error", RED_TEXT(), NONE()));
             throw new RuntimeException(e);
         }
     }
@@ -51,7 +53,7 @@ public class ConsoleReaderHelper {
                 System.out.print("\033\143");
             }
         } catch (Exception e) {
-            System.out.println(colorize("Ошибка при очистке консоли", RED_TEXT(), NONE()));
+            System.out.println(colorize("Console clearing error", RED_TEXT(), NONE()));
             throw new RuntimeException(e);
         }
     }

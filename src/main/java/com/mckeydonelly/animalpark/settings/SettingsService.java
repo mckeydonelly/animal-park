@@ -2,31 +2,33 @@ package com.mckeydonelly.animalpark.settings;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.mckeydonelly.animalpark.settings.animal.Animal;
-import com.mckeydonelly.animalpark.settings.animal.AnimalSettings;
-import static com.diogonunes.jcolor.Ansi.colorize;
-import static com.diogonunes.jcolor.Attribute.*;
+import com.mckeydonelly.animalpark.settings.unit.Unit;
+import com.mckeydonelly.animalpark.settings.unit.UnitSettings;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.NONE;
+import static com.diogonunes.jcolor.Attribute.RED_TEXT;
+
 /**
- * Сервис обработки настроек приложения и сущностей.
+ * Service for processing application settings and units configuration.
  */
 public class SettingsService {
     private static final String APP_SETTINGS_PATH = "app.properties";
-    private static final String ANIMAL_SETTINGS_PATH = "animal-settings.yaml";
+    private static final String ANIMAL_SETTINGS_PATH = "unit-settings.yaml";
     private final Properties appSettings;
-    private final AnimalSettings animalSettings;
+    private final UnitSettings unitSettings;
 
     public SettingsService() {
-        this.animalSettings = initAnimalSettings();
+        this.unitSettings = initAnimalSettings();
         this.appSettings = new Properties();
     }
 
     /**
-     * Инициализация настроек приложения из properties файла в случае запуска с дефолтными настройками.
+     * Initialization of application settings from the properties file
      */
     public SimulationSettings getDefaultSettings() {
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(APP_SETTINGS_PATH)) {
@@ -67,39 +69,39 @@ public class SettingsService {
     }
 
     /**
-     * Инициализация настроек животных из YAML файла.
+     * Initializing unit settings from a YAML file.
      *
-     * @return настройки животных.
+     * @return UnitSettings
      */
-    private AnimalSettings initAnimalSettings() {
+    private UnitSettings initAnimalSettings() {
         ObjectMapper mapper = new YAMLMapper();
-        AnimalSettings tmpAnimalSettings = null;
+        UnitSettings tmpUnitSettings = null;
         try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(ANIMAL_SETTINGS_PATH)) {
-            tmpAnimalSettings = mapper.readValue(inputStream, AnimalSettings.class);
+            tmpUnitSettings = mapper.readValue(inputStream, UnitSettings.class);
         } catch (IOException e) {
             System.out.println(colorize("Can't find or read properties file for animals by path: " + ANIMAL_SETTINGS_PATH, RED_TEXT(), NONE()));
             e.printStackTrace();
             System.exit(1);
         }
-        return tmpAnimalSettings;
+        return tmpUnitSettings;
     }
 
     /**
-     * Получение настроек животного по имени.
+     * Get unit setting by name
      *
-     * @param name - имя животного.
-     * @return настройки животного.
+     * @param name unit name
+     * @return configuration of this unit
      */
-    public Animal getAnimalByName(String name) {
-        return animalSettings.getAnimals().get(name);
+    public Unit getUnitByName(String name) {
+        return unitSettings.getUnits().get(name);
     }
 
     /**
-     * Получение настроек животных
+     * Get configuration for all units
      *
-     * @return настройки животных.
+     * @return units settings
      */
-    public AnimalSettings getAnimalSettings() {
-        return animalSettings;
+    public UnitSettings getAnimalSettings() {
+        return unitSettings;
     }
 }

@@ -1,18 +1,20 @@
 package com.mckeydonelly.animalpark.menu;
 
-import com.mckeydonelly.animalpark.utils.console.ConsoleReaderHelper;
 import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SettingsType;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
+import com.mckeydonelly.animalpark.utils.console.ConsoleReaderHelper;
 import org.jline.reader.LineReader;
 import org.jline.utils.NonBlockingReader;
+
 import java.io.IOException;
 
 import static com.diogonunes.jcolor.Ansi.colorize;
-import static com.diogonunes.jcolor.Attribute.*;
+import static com.diogonunes.jcolor.Attribute.NONE;
+import static com.diogonunes.jcolor.Attribute.RED_TEXT;
 
 /**
- * Отображает стартовое меню и принимает ввод от пользователя.
+ * Displays the start menu and accepts input from the user.
  */
 public class StartMenu {
     private final NonBlockingReader reader = ConsoleReaderHelper.getReader();
@@ -23,7 +25,10 @@ public class StartMenu {
         this.settingsService = settingsService;
     }
 
-
+    /**
+     * Print menu and wait user input
+     * @return simulation settings
+     */
     public SimulationSettings start() {
         SimulationSettings settings = settingsService.getDefaultSettings();
 
@@ -40,7 +45,7 @@ public class StartMenu {
                     default -> System.out.print("\r");
                 }
             } catch (IOException e) {
-                System.out.println(colorize("Ошибка при чтении команды", RED_TEXT(), NONE()));
+                System.out.println(colorize("Error reading the command", RED_TEXT(), NONE()));
                 throw new RuntimeException(e);
             }
         }
@@ -51,6 +56,11 @@ public class StartMenu {
         return settings;
     }
 
+    /**
+     * Manual configuration from console
+     * @param settings default simulation settings
+     * @param lineReader console reader
+     */
     private void manualConfiguration(SimulationSettings settings, LineReader lineReader) {
         System.out.println("\nFor starting the simulation please enter configuration parameters (press ENTER for default settings): ");
 
@@ -59,13 +69,19 @@ public class StartMenu {
         }
     }
 
+    /**
+     * Reading input parameters
+     * @param lineReader console reader
+     * @param settings default simulation settings
+     * @param type setting type
+     */
     private void getInputParameter(LineReader lineReader, SimulationSettings settings, SettingsType type) {
         boolean badParam = true;
         System.out.print("Enter " + type.getDescription() + ": ");
         while (badParam) {
             try {
                 String input = lineReader.readLine();
-                if("".equals(input)) {
+                if ("".equals(input)) {
                     break;
                 }
                 int paramValue = Integer.parseInt(input);
@@ -77,6 +93,10 @@ public class StartMenu {
         }
     }
 
+    /**
+     * Prints simulation parameters
+     * @param settings simulation settings
+     */
     private void printStartParameters(SimulationSettings settings) {
         System.out.println("\nStart simulation with parameters:");
         for (SettingsType settingsType : SettingsType.values()) {
@@ -86,7 +106,9 @@ public class StartMenu {
         waitForSpace();
     }
 
-
+    /**
+     * Wait for "space" for continue
+     */
     private void waitForSpace() {
         int command;
         while (true) {
@@ -96,7 +118,7 @@ public class StartMenu {
                     return;
                 }
             } catch (IOException e) {
-                System.out.println(colorize("Ошибка при чтении команды", RED_TEXT(), NONE()));
+                System.out.println(colorize("Error reading the command", RED_TEXT(), NONE()));
                 throw new RuntimeException(e);
             }
         }

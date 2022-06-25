@@ -1,7 +1,7 @@
 package com.mckeydonelly.animalpark.settings;
 
 /**
- * Хранит типы настроек приложения
+ * Global simulation setting types
  */
 
 public enum SettingsType {

@@ -1,9 +1,14 @@
-animals:
+units:
   Wolf:
-    animalProperties:
+    unitProperties:
       weight: 50
       moveSpeed: 30
       weightEatToFill: 8
+    type: CARNIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐺"
     maxByLocation: 30
     eatChance:
@@ -23,10 +28,15 @@ animals:
       Larva: 0
       Bush: 0
   Snake:
-    animalProperties:
+    unitProperties:
       weight: 15
       moveSpeed: 1
       weightEatToFill: 3
+    type: CARNIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐍"
     maxByLocation: 30
     eatChance:
@@ -46,10 +56,15 @@ animals:
       Larva: 0
       Bush: 0
   Fox:
-    animalProperties:
+    unitProperties:
       weight: 8
       moveSpeed: 2
       weightEatToFill: 2
+    type: CARNIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🦊"
     maxByLocation: 30
     eatChance:
@@ -69,10 +84,15 @@ animals:
       Larva: 40
       Bush: 0
   Bear:
-    animalProperties:
+    unitProperties:
       weight: 500
       moveSpeed: 2
       weightEatToFill: 80
+    type: CARNIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐻"
     maxByLocation: 5
     eatChance:
@@ -92,10 +112,15 @@ animals:
       Larva: 0
       Bush: 0
   Eagle:
-    animalProperties:
+    unitProperties:
       weight: 6
       moveSpeed: 3
       weightEatToFill: 1
+    type: CARNIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🦅"
     maxByLocation: 20
     eatChance:
@@ -115,10 +140,15 @@ animals:
       Larva: 0
       Bush: 0
   Horse:
-    animalProperties:
+    unitProperties:
       weight: 400
       moveSpeed: 4
       weightEatToFill: 60
+    type: HERBIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐴"
     maxByLocation: 20
     eatChance:
@@ -138,10 +168,15 @@ animals:
       Larva: 0
       Bush: 100
   Deer:
-    animalProperties:
+    unitProperties:
       weight: 300
       moveSpeed: 4
       weightEatToFill: 50
+    type: HERBIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🦌"
     maxByLocation: 20
     eatChance:
@@ -161,10 +196,15 @@ animals:
       Larva: 0
       Bush: 100
   Rabbit:
-    animalProperties:
+    unitProperties:
       weight: 2
       moveSpeed: 2
       weightEatToFill: 0.45
+    type: HERBIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐇"
     maxByLocation: 150
     eatChance:
@@ -184,10 +224,15 @@ animals:
       Larva: 0
       Bush: 100
   Mouse:
-    animalProperties:
+    unitProperties:
       weight: 2
       moveSpeed: 2
       weightEatToFill: 0.45
+    type: CARNIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐁"
     maxByLocation: 150
     eatChance:
@@ -207,10 +252,15 @@ animals:
       Larva: 90
       Bush: 100
   Goat:
-    animalProperties:
+    unitProperties:
       weight: 60
       moveSpeed: 3
       weightEatToFill: 10
+    type: HERBIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐐"
     maxByLocation: 140
     eatChance:
@@ -230,10 +280,15 @@ animals:
       Larva: 0
       Bush: 100
   Sheep:
-    animalProperties:
+    unitProperties:
       weight: 70
       moveSpeed: 3
       weightEatToFill: 15
+    type: HERBIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐑"
     maxByLocation: 140
     eatChance:
@@ -253,10 +308,15 @@ animals:
       Larva: 0
       Bush: 100
   Boar:
-    animalProperties:
+    unitProperties:
       weight: 400
       moveSpeed: 2
       weightEatToFill: 50
+    type: CARNIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐗"
     maxByLocation: 50
     eatChance:
@@ -276,10 +336,15 @@ animals:
       Larva: 90
       Bush: 100
   Buffalo:
-    animalProperties:
+    unitProperties:
       weight: 700
       moveSpeed: 3
       weightEatToFill: 100
+    type: HERBIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐃"
     maxByLocation: 10
     eatChance:
@@ -299,10 +364,15 @@ animals:
       Larva: 0
       Bush: 100
   Duck:
-    animalProperties:
+    unitProperties:
       weight: 1
       moveSpeed: 4
       weightEatToFill: 0.15
+    type: CARNIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🦆"
     maxByLocation: 200
     eatChance:
@@ -322,10 +392,15 @@ animals:
       Larva: 90
       Bush: 100
   Larva:
-    animalProperties:
+    unitProperties:
       weight: 0.01
       moveSpeed: 0
       weightEatToFill: 1
+    type: HERBIVOROUS
+    availableActions:
+      - MOVE
+      - EAT
+      - REPRODUCTION
     emoji: "🐛"
     maxByLocation: 1000
     eatChance:
@@ -345,10 +420,12 @@ animals:
       Duck: 0
       Bush: 100
   Bush:
-    animalProperties:
+    unitProperties:
       weight: 1
       moveSpeed: 0
       weightEatToFill: 0
+    type: PLANT
+    availableActions: []
     emoji: "🌵"
     maxByLocation: 200
     eatChance:

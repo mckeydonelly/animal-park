@@ -1,11 +1,11 @@
 package com.mckeydonelly.animalpark.map;
 
 /**
- * Хранит позицию на карте.
+ * Contains a position on the map
  */
 public class Position {
-    private int row;
-    private int column;
+    private final int row;
+    private final int column;
 
     public Position(int row, int column) {
         this.row = row;

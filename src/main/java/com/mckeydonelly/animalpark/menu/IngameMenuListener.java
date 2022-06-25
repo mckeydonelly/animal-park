@@ -11,7 +11,8 @@ import static com.diogonunes.jcolor.Ansi.colorize;
 import static com.diogonunes.jcolor.Attribute.*;
 
 /**
- * Слушает и обрабатывает ввод пользователя во время симуляции.
+ * Listener for user input during the simulation
+ * Uses non-blocking console reader
  */
 public class IngameMenuListener implements Runnable {
     private final NonBlockingReader reader = ConsoleReaderHelper.getReader();
@@ -37,7 +38,7 @@ public class IngameMenuListener implements Runnable {
                     default -> System.out.print("\r");
                 }
             } catch (IOException e) {
-                System.out.println(colorize("Ошибка при чтении команды", RED_TEXT(), NONE()));
+                System.out.println(colorize("Error reading the command", RED_TEXT(), NONE()));
                 throw new RuntimeException(e);
             }
         }
@@ -45,7 +46,7 @@ public class IngameMenuListener implements Runnable {
     }
 
     /**
-     * Ставит симуляцию на паузу.
+     * Pause simulation
      */
     private void pause() {
         activityProcessor.pause();
@@ -54,7 +55,25 @@ public class IngameMenuListener implements Runnable {
     }
 
     /**
-     * Выводит статистику по конкретной клетке.
+     * Unpause simulation
+     */
+    private void unPause() {
+        int command = 0;
+        while (command != ' ') {
+            try {
+                command = reader.read();
+                if (command == ' ') {
+                    activityProcessor.unPause();
+                }
+            } catch (IOException e) {
+                System.out.println(colorize("Error reading the command", RED_TEXT(), NONE()));
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * Displays statistics for a specific location.
      */
     private void getStatisticByCell() {
         activityProcessor.pause();
@@ -80,23 +99,5 @@ public class IngameMenuListener implements Runnable {
 
         System.out.println("For continue press SPACE...");
         unPause();
-    }
-
-    /**
-     * Возобновляет симуляцию.
-     */
-    private void unPause() {
-        int command = 0;
-        while (command != ' ') {
-            try {
-                command = reader.read();
-                if (command == ' ') {
-                    activityProcessor.unPause();
-                }
-            } catch (IOException e) {
-                System.out.println(colorize("Ошибка при чтении команды", RED_TEXT(), NONE()));
-                throw new RuntimeException(e);
-            }
-        }
     }
 }

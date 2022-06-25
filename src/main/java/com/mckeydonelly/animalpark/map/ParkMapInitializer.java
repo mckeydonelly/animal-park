@@ -1,7 +1,5 @@
 package com.mckeydonelly.animalpark.map;
 
-import com.mckeydonelly.animalpark.entities.UnitFactory;
-import com.mckeydonelly.animalpark.entities.UnitFactoryImpl;
 import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SettingsType;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
@@ -10,16 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Создает и заполняет карту начальными значениями по заданным настройкам.
+ * Create and initialize simulation map
  */
-public class MapProcessor {
-    private final UnitFactory unitFactory = new UnitFactoryImpl();
+public class ParkMapInitializer {
     private final SettingsService settingsService;
 
-    public MapProcessor(SettingsService settingsService) {
+    public ParkMapInitializer(SettingsService settingsService) {
         this.settingsService = settingsService;
     }
 
+    /**
+     * Initializes the map and fills it with creatures
+     * @param settings simulation settings
+     * @return park map
+     */
     public ParkMap create(SimulationSettings settings) {
         System.out.println("Start creating map...");
 
@@ -31,6 +33,11 @@ public class MapProcessor {
         return parkMap;
     }
 
+    /**
+     * Initialize row and columns
+     * @param settings simulation settings
+     * @return created map
+     */
     private ParkMap initializeMap(SimulationSettings settings) {
         System.out.println("Creating locations...");
 
@@ -50,12 +57,14 @@ public class MapProcessor {
         return new ParkMap(tmpMap);
     }
 
+    /**
+     * Fills locations starting units
+     * @param parkMap empty map
+     */
     private void generateCreature(ParkMap parkMap) {
         System.out.println("Create creatures... growing plants...");
 
-        parkMap.getMap().stream()
-                .flatMap(List::stream)
-                .toList()
-                .forEach(location -> location.fill(unitFactory));
+        parkMap.getAllLocations()
+                .forEach(Location::fill);
     }
 }

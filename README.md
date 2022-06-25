@@ -9,7 +9,7 @@ Animal Park
 
 Дефолтные настройки хранятся в папке ```resources```:
 - ```app.properties``` - настройки приложения
-- ```animal-settings.yaml``` - параметры существ
+- ```unit-settings.yaml``` - параметры существ
 
 Используемые фреймворки и библиотеки:
 - jline для считывания с консоли
@@ -18,13 +18,13 @@ Animal Park
 Сборка проекта:
 
 ```
-$ cd animal-park
+$ cd unit-park
 $ mvn package
 ```
 
 Запуск проекта:
 ```
-$ java -jar ./target/animal-park.jar
+$ java -jar ./target/unit-park.jar
 ```
 
 ### Ограничения
@@ -48,4 +48,4 @@ $ java -jar ./target/animal-park.jar
 - ```activity``` - содержит классы для запуска жизни животных в многопоточном режиме  
 
 Пример работы приложения:
-![demo-animal-park](https://user-images.githubusercontent.com/10290445/175464988-e40f30af-f3ca-4593-8fbe-cd859a29ed79.gif)
+![demo-unit-park](https://user-images.githubusercontent.com/10290445/175464988-e40f30af-f3ca-4593-8fbe-cd859a29ed79.gif)

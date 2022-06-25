@@ -6,11 +6,10 @@ import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.utils.console.ConsoleReaderHelper;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * Вывод статистики по парку
+ * Printing statistics for the park
  */
 public class StatisticService {
     private final IngameMenu ingameMenu;
@@ -32,13 +31,11 @@ public class StatisticService {
         StringBuilder statPrint = new StringBuilder();
         Map<String, Integer> uniqueEntitiesTotal = new HashMap<>();
 
-        parkMap.getMap().stream()
-                .flatMap(List::stream)
-                .toList()
+        parkMap.getAllLocations()
                 .forEach(location -> location.getUniqueEntitiesCount().forEach((k, v) -> uniqueEntitiesTotal.merge(k, v, Integer::sum)));
 
         settingsService.getAnimalSettings()
-                .getAnimals().forEach((key, value) -> statPrint
+                .getUnits().forEach((key, value) -> statPrint
                         .append(value.getEmoji())
                         .append("=")
                         .append(uniqueEntitiesTotal.getOrDefault(key, 0))

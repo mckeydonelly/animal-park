@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.mckeydonelly</groupId>
-    <artifactId>animal-park</artifactId>
+    <artifactId>unit-park</artifactId>
     <version>1.0</version>
 
     <dependencies>
@@ -43,7 +43,7 @@
     </properties>
 
     <build>
-        <finalName>animal-park</finalName>
+        <finalName>unit-park</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

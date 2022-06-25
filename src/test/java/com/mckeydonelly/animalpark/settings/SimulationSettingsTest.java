@@ -1,6 +1,5 @@
 package com.mckeydonelly.animalpark.settings;
 
-import com.mckeydonelly.animalpark.settings.animal.AnimalSettings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
