@@ -62,7 +62,7 @@ public class Location {
         int entityTypesCount = settingsService.getAnimalSettings().getUnits().size();
 
         for (int index = 0; index <= entityTypesCount; index++) {
-            String entityType = plantTypes.get(ThreadLocalRandom.current().nextInt(entityTypesCount));
+            String entityType = plantTypes.get(ThreadLocalRandom.current().nextInt(plantTypes.size()));
             Unit unit = new Unit(position, entityType, settingsService.getUnitByName(entityType).getUnitProperties());
             add(unit);
         }

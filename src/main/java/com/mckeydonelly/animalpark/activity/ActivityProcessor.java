@@ -93,8 +93,7 @@ public class ActivityProcessor {
                     .forEach(location -> {
                         location.lockLocation();
                         try {
-                            location.getEntitiesOnLocationList().stream()
-                                    .filter(unit -> !UnitTypes.PLANT.equals(settingsService.getUnitByName(unit.getName()).getType()))
+                            location.getEntitiesOnLocationList()
                                     .forEach(unit -> entitiesTaskList.add(() -> unitActionsProcessor.doTurn(unit)));
                         } finally {
                             location.unlockLocation();
