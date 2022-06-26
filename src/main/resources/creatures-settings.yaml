@@ -1,6 +1,6 @@
-units:
+creatures:
   Wolf:
-    unitProperties:
+    creatureProperties:
       weight: 50
       moveSpeed: 30
       weightEatToFill: 8
@@ -28,7 +28,7 @@ units:
       Larva: 0
       Bush: 0
   Snake:
-    unitProperties:
+    creatureProperties:
       weight: 15
       moveSpeed: 1
       weightEatToFill: 3
@@ -56,7 +56,7 @@ units:
       Larva: 0
       Bush: 0
   Fox:
-    unitProperties:
+    creatureProperties:
       weight: 8
       moveSpeed: 2
       weightEatToFill: 2
@@ -84,7 +84,7 @@ units:
       Larva: 40
       Bush: 0
   Bear:
-    unitProperties:
+    creatureProperties:
       weight: 500
       moveSpeed: 2
       weightEatToFill: 80
@@ -112,7 +112,7 @@ units:
       Larva: 0
       Bush: 0
   Eagle:
-    unitProperties:
+    creatureProperties:
       weight: 6
       moveSpeed: 3
       weightEatToFill: 1
@@ -140,7 +140,7 @@ units:
       Larva: 0
       Bush: 0
   Horse:
-    unitProperties:
+    creatureProperties:
       weight: 400
       moveSpeed: 4
       weightEatToFill: 60
@@ -168,7 +168,7 @@ units:
       Larva: 0
       Bush: 100
   Deer:
-    unitProperties:
+    creatureProperties:
       weight: 300
       moveSpeed: 4
       weightEatToFill: 50
@@ -196,7 +196,7 @@ units:
       Larva: 0
       Bush: 100
   Rabbit:
-    unitProperties:
+    creatureProperties:
       weight: 2
       moveSpeed: 2
       weightEatToFill: 0.45
@@ -224,7 +224,7 @@ units:
       Larva: 0
       Bush: 100
   Mouse:
-    unitProperties:
+    creatureProperties:
       weight: 2
       moveSpeed: 2
       weightEatToFill: 0.45
@@ -252,7 +252,7 @@ units:
       Larva: 90
       Bush: 100
   Goat:
-    unitProperties:
+    creatureProperties:
       weight: 60
       moveSpeed: 3
       weightEatToFill: 10
@@ -280,7 +280,7 @@ units:
       Larva: 0
       Bush: 100
   Sheep:
-    unitProperties:
+    creatureProperties:
       weight: 70
       moveSpeed: 3
       weightEatToFill: 15
@@ -308,7 +308,7 @@ units:
       Larva: 0
       Bush: 100
   Boar:
-    unitProperties:
+    creatureProperties:
       weight: 400
       moveSpeed: 2
       weightEatToFill: 50
@@ -336,7 +336,7 @@ units:
       Larva: 90
       Bush: 100
   Buffalo:
-    unitProperties:
+    creatureProperties:
       weight: 700
       moveSpeed: 3
       weightEatToFill: 100
@@ -364,7 +364,7 @@ units:
       Larva: 0
       Bush: 100
   Duck:
-    unitProperties:
+    creatureProperties:
       weight: 1
       moveSpeed: 4
       weightEatToFill: 0.15
@@ -392,7 +392,7 @@ units:
       Larva: 90
       Bush: 100
   Larva:
-    unitProperties:
+    creatureProperties:
       weight: 0.01
       moveSpeed: 0
       weightEatToFill: 1
@@ -420,7 +420,7 @@ units:
       Duck: 0
       Bush: 100
   Bush:
-    unitProperties:
+    creatureProperties:
       weight: 1
       moveSpeed: 0
       weightEatToFill: 0

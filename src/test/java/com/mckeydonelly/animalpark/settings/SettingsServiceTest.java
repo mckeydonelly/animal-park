@@ -1,7 +1,7 @@
 package com.mckeydonelly.animalpark.settings;
 
-import com.mckeydonelly.animalpark.settings.unit.Unit;
-import com.mckeydonelly.animalpark.settings.unit.UnitSettings;
+import com.mckeydonelly.animalpark.settings.creature.Creature;
+import com.mckeydonelly.animalpark.settings.creature.CreaturesSettings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -28,14 +28,14 @@ class SettingsServiceTest {
     }
 
     @Test
-    void should_success_GetAnimalByName() {
-        Unit unit = settingsService.getUnitByName("Wolf");
-        assertNotNull(unit);
+    void should_success_GetCreatureByName() {
+        Creature creature = settingsService.getCreatureByName("Wolf");
+        assertNotNull(creature);
     }
 
     @Test
-    void should_success_GetAnimalSettings() {
-        UnitSettings unitSettings = settingsService.getAnimalSettings();
-        assertNotNull(unitSettings);
+    void should_success_GetCreaturesSettings() {
+        CreaturesSettings creaturesSettings = settingsService.getCreaturesSettings();
+        assertNotNull(creaturesSettings);
     }
 }

@@ -1,4 +1,4 @@
-package com.mckeydonelly.animalpark.unit;
+package com.mckeydonelly.animalpark.creature;
 
 import com.mckeydonelly.animalpark.settings.SettingsService;
 
@@ -17,8 +17,8 @@ public class EatingProcessor {
 
     public EatingProcessor(SettingsService settingsService) {
         this.chanceMap = new HashMap<>();
-        settingsService.getAnimalSettings()
-                .getUnits()
+        settingsService.getCreaturesSettings()
+                .getCreatures()
                 .forEach((name, values) -> chanceMap.put(name, values.getEatChance()));
     }
 

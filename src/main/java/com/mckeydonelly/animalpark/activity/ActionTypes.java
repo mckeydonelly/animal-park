@@ -1,7 +1,7 @@
 package com.mckeydonelly.animalpark.activity;
 
 /**
- * Contains available unit actions
+ * Contains available creature actions
  */
 public enum ActionTypes {
     MOVE,

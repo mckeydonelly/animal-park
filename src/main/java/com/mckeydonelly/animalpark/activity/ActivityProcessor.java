@@ -1,11 +1,10 @@
 package com.mckeydonelly.animalpark.activity;
 
+import com.mckeydonelly.animalpark.map.LocationProcessor;
 import com.mckeydonelly.animalpark.map.ParkMap;
 import com.mckeydonelly.animalpark.menu.IngameMenuListener;
-import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SettingsType;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
-import com.mckeydonelly.animalpark.unit.UnitTypes;
 import com.mckeydonelly.animalpark.utils.StatisticService;
 
 import java.util.ArrayList;
@@ -22,23 +21,23 @@ public class ActivityProcessor {
     private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
     private final ParkMap parkMap;
     private final StatisticService statisticService;
-    private final UnitActionsProcessor unitActionsProcessor;
+    private final CreatureActionProcessor creatureActionProcessor;
     private final SimulationSettings settings;
-    private final SettingsService settingsService;
+    private final LocationProcessor locationProcessor;
     private final AtomicInteger turnsCount;
     private final int startTurnsCount;
     private volatile boolean stop;
 
     public ActivityProcessor(ParkMap parkMap,
                              StatisticService statisticService,
-                             UnitActionsProcessor unitActionsProcessor,
+                             CreatureActionProcessor creatureActionProcessor,
                              SimulationSettings settings,
-                             SettingsService settingsService) {
+                             LocationProcessor locationProcessor) {
         this.parkMap = parkMap;
         this.statisticService = statisticService;
-        this.unitActionsProcessor = unitActionsProcessor;
+        this.creatureActionProcessor = creatureActionProcessor;
         this.settings = settings;
-        this.settingsService = settingsService;
+        this.locationProcessor = locationProcessor;
         this.turnsCount = new AtomicInteger(settings.get(SettingsType.TURNS_COUNT));
         this.startTurnsCount = settings.get(SettingsType.TURNS_COUNT);
     }
@@ -61,7 +60,7 @@ public class ActivityProcessor {
                 TimeUnit.MILLISECONDS);
 
         scheduledExecutorService.scheduleWithFixedDelay(
-                () -> growPlants(parkMap),
+                this::growPlantsActivity,
                 100,
                 settings.get(SettingsType.GROW_PLANTS_FREQUENCY),
                 TimeUnit.MILLISECONDS);
@@ -80,7 +79,7 @@ public class ActivityProcessor {
     }
 
     /**
-     * Performing a life cycle for units.
+     * Performing a life cycle for creatures.
      *
      * @param parkMap park map
      */
@@ -94,7 +93,7 @@ public class ActivityProcessor {
                         location.lockLocation();
                         try {
                             location.getEntitiesOnLocationList()
-                                    .forEach(unit -> entitiesTaskList.add(() -> unitActionsProcessor.doTurn(unit)));
+                                    .forEach(creature -> entitiesTaskList.add(() -> creatureActionProcessor.doTurn(creature)));
                         } finally {
                             location.unlockLocation();
                         }
@@ -111,7 +110,7 @@ public class ActivityProcessor {
                     break;
             }
 
-            resetReproduction();
+            resetReproductionActivity();
 
             while (stop) {
                 Thread.onSpinWait();
@@ -125,12 +124,12 @@ public class ActivityProcessor {
     /**
      * Reset reproduction counter after each cycle
      */
-    private void resetReproduction() {
+    private void resetReproductionActivity() {
         parkMap.getAllLocations()
                 .forEach(location -> {
                     location.lockLocation();
                     try {
-                        location.getEntitiesOnLocationList().forEach(unit -> unit.setReadyToReproduction(true));
+                        location.getEntitiesOnLocationList().forEach(creature -> creature.setReadyToReproduction(true));
                     } finally {
                         location.unlockLocation();
                     }
@@ -139,23 +138,13 @@ public class ActivityProcessor {
 
     /**
      * Growing new plants
-     *
-     * @param parkMap park map
      */
-    private void growPlants(ParkMap parkMap) {
+    private void growPlantsActivity() {
         while (stop) {
             Thread.onSpinWait();
         }
 
-        parkMap.getAllLocations()
-                .forEach(location -> {
-                    location.lockLocation();
-                    try {
-                        location.growPlants();
-                    } finally {
-                        location.unlockLocation();
-                    }
-                });
+        locationProcessor.growPlants(parkMap);
     }
 
     /**

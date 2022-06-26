@@ -14,7 +14,8 @@ class ParkMapInitializerTest {
     static void setUp() {
         SettingsService settingsService = new SettingsService();
         settings = settingsService.getDefaultSettings();
-        parkMapInitializer = new ParkMapInitializer(settingsService);
+        LocationProcessor locationProcessor = new LocationProcessor(settingsService, settings);
+        parkMapInitializer = new ParkMapInitializer(settingsService, locationProcessor);
     }
 
     @Test

@@ -1,8 +1,8 @@
 package com.mckeydonelly.animalpark.map;
 
-import com.mckeydonelly.animalpark.unit.Unit;
+import com.mckeydonelly.animalpark.creature.Creature;
 import com.mckeydonelly.animalpark.settings.SettingsService;
-import com.mckeydonelly.animalpark.unit.UnitTypes;
+import com.mckeydonelly.animalpark.creature.CreatureTypes;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Location on map
  */
 public class Location {
-    private final List<Unit> entitiesOnLocationList = new ArrayList<>();
+    private final List<Creature> entitiesOnLocationList = new ArrayList<>();
     private final Map<String, Integer> uniqueEntitiesCount = new ConcurrentHashMap<>();
     private final Position position;
     private final SettingsService settingsService;
@@ -25,7 +25,7 @@ public class Location {
         this.settingsService = settingsService;
     }
 
-    public List<Unit> getEntitiesOnLocationList() {
+    public List<Creature> getEntitiesOnLocationList() {
         return entitiesOnLocationList;
     }
 
@@ -41,30 +41,13 @@ public class Location {
      * Filling location for the starting simulation.
      */
     public void fill() {
-        List<String> entityTypes = new ArrayList<>(settingsService.getAnimalSettings().getUnits().keySet());
-        int entityTypesCount = settingsService.getAnimalSettings().getUnits().size();
+        List<String> entityTypes = new ArrayList<>(settingsService.getCreaturesSettings().getCreatures().keySet());
+        int entityTypesCount = settingsService.getCreaturesSettings().getCreatures().size();
 
         for (int index = 0; index <= entityTypesCount; index++) {
             String entityType = entityTypes.get(ThreadLocalRandom.current().nextInt(entityTypesCount));
-            Unit unit = new Unit(position, entityType, settingsService.getUnitByName(entityType).getUnitProperties());
-            add(unit);
-        }
-    }
-
-    /**
-     * Growing new plants on location during the simulation
-     */
-    public void growPlants() {
-        List<String> plantTypes = settingsService.getAnimalSettings().getUnits().entrySet().stream()
-                .filter(unit -> UnitTypes.PLANT.equals(unit.getValue().getType()))
-                .map(Map.Entry::getKey)
-                .toList();
-        int entityTypesCount = settingsService.getAnimalSettings().getUnits().size();
-
-        for (int index = 0; index <= entityTypesCount; index++) {
-            String entityType = plantTypes.get(ThreadLocalRandom.current().nextInt(plantTypes.size()));
-            Unit unit = new Unit(position, entityType, settingsService.getUnitByName(entityType).getUnitProperties());
-            add(unit);
+            Creature creature = new Creature(position, entityType, settingsService.getCreatureByName(entityType).getCreatureProperties());
+            add(creature);
         }
     }
 
@@ -77,37 +60,37 @@ public class Location {
     }
 
     /**
-     * Add unit in location
+     * Add creature in location
      *
-     * @param unit unit
+     * @param creature creature
      */
-    public void add(Unit unit) {
-        if (changeUniqueEntities(unit, false)) {
-            entitiesOnLocationList.add(unit);
+    public void add(Creature creature) {
+        if (changeUniqueEntities(creature, false)) {
+            entitiesOnLocationList.add(creature);
         }
     }
 
     /**
-     * Remove unit from location
+     * Remove creature from location
      *
-     * @param unit unit
+     * @param creature creature
      */
-    public void remove(Unit unit) {
-        changeUniqueEntities(unit, true);
-        entitiesOnLocationList.remove(unit);
+    public void remove(Creature creature) {
+        changeUniqueEntities(creature, true);
+        entitiesOnLocationList.remove(creature);
     }
 
     /**
-     * Change counter of uniques units on location
+     * Change counter of uniques creatures on location
      *
-     * @param unit unit
+     * @param creature creature
      * @param leave flag of the exit entity from the location or death
      * @return boolean
      *
-     * Return false if location have maximum of this unit type on location
+     * Return false if location have maximum of this creature type on location
      */
-    public boolean changeUniqueEntities(Unit unit, boolean leave) {
-        String entityName = unit.getName();
+    public boolean changeUniqueEntities(Creature creature, boolean leave) {
+        String entityName = creature.getName();
 
         int countUniqueEntityOnLocation = uniqueEntitiesCount.getOrDefault(entityName, 0);
 
@@ -126,10 +109,10 @@ public class Location {
     }
 
     /**
-     * Check limit unique unit on location
+     * Check limit unique creature on location
      */
     private boolean checkMaxCountEntities(String entityName, int countUniqueEntityOnLocation) {
-        return countUniqueEntityOnLocation <= settingsService.getUnitByName(entityName).getMaxByLocation() - 1;
+        return countUniqueEntityOnLocation <= settingsService.getCreatureByName(entityName).getMaxByLocation() - 1;
     }
 
     @Override
@@ -144,8 +127,8 @@ public class Location {
         result.append("[");
 
         if (uniqueEntitiesCount.size() > 0) {
-            settingsService.getAnimalSettings()
-                    .getUnits().forEach((key, value) -> result
+            settingsService.getCreaturesSettings()
+                    .getCreatures().forEach((key, value) -> result
                             .append(value.getEmoji())
                             .append("=")
                             .append(uniqueEntitiesCount.getOrDefault(key, 0))

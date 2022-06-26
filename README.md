@@ -1,51 +1,50 @@
 Animal Park
 =========
-### Краткое описание
+### Main description
 
-Симулятор острова животных на java.
+Animal island simulator in java.
 
-Программа заселяет остров животными и симулирует их жизнь с элементами случайности.
-Настройки программы запрашиваются при старте, либо используются дефолтные.
+The program populates the island with animals and simulates their life with elements of randomness.
+Program settings are requested at startup, or default settings are used.
 
-Дефолтные настройки хранятся в папке ```resources```:
-- ```app.properties``` - настройки приложения
-- ```unit-settings.yaml``` - параметры существ
+The default settings are contained in the folder ```resources```:
+- ```app.properties``` - global app settings
+- ```creature-settings.yaml``` - creatures configurations
 
-Используемые фреймворки и библиотеки:
-- jline для считывания с консоли
-- JColor для вывода на консоль текста цветом
+Frameworks and libraries used:
+- jline for reading from the console
+- JColor for displaying text in color to the console
 
-Сборка проекта:
+Build project:
 
 ```
-$ cd unit-park
+$ cd creature-park
 $ mvn package
 ```
 
-Запуск проекта:
+Run project:
 ```
-$ java -jar ./target/unit-park.jar
+$ java -jar ./target/creature-park.jar
 ```
 
-### Ограничения
+### Restrictions
 
-- Поддерживаемые виды животных и их параметры определены в пакете ```entities```  
-- Максимальный размер карты или любых других настраиваемых параметров ограничен ```Integer.MAX_VALUE```  
-- Ход происходит по раундам. Пока все в текущем раунде не сходят, следующий раунд не начнется
-- Функционал очистки консоли и считывания ввода для вызова меню поддерживается только в нативной консоли  
+- The maximum size of the map or any other configurable parameters is limited to ``Integer.MAX_VALUE``
+- The move takes place in rounds. Until everyone in the current round comes off, the next round won't start
+- The functionality of clearing the console and reading the input to open the menu is supported only in the native console
 
-### Краткое описание классов
+### Brief description of packages
 
-В корневом пакете проекта `com.mckeydonelly.animalpark` находится класс ```App```, содержащий в себе точку входа в приложение.
+In the root package of the project `com.mckeydonelly.animalpark` there is a class `App` containing the entry point to the application.
 
-Пакеты:  
-- ```utils``` - содержит классы для чтения с консоли и вывода статистики
-- ```park``` - содержит основной класс запуска подготовки данных и запуска логики, а также вывода статистики  
-- ```menu``` - содержит классы для работы с меню  
-- ```settings``` - содержит классы для работы с настройками программы  
-- ```units``` - содержит классы животных и их параметры  
-- ```map``` - содержит классы для работы с картой  
-- ```activity``` - содержит классы для запуска жизни животных в многопоточном режиме  
+Packages:  
+- ``utils`` - contains classes for reading from the console and displaying statistics
+- ``park`` - contains the main class for starting data preparation and starting logic, as well as statistics output
+- ``menu`` - contains classes for working with menus
+- ``settings`` - contains classes for working with program settings
+- ``creature`` - contains animal classes and their parameters
+- ``map`` - contains classes for working with the map
+- ``activity`` - contains classes for running animal life in multithreaded mode 
 
-Пример работы приложения:
-![demo-unit-park](https://user-images.githubusercontent.com/10290445/175464988-e40f30af-f3ca-4593-8fbe-cd859a29ed79.gif)
+Example:
+![demo-creature-park](https://user-images.githubusercontent.com/10290445/175464988-e40f30af-f3ca-4593-8fbe-cd859a29ed79.gif)

@@ -2,8 +2,8 @@ package com.mckeydonelly.animalpark.settings;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import com.mckeydonelly.animalpark.settings.unit.Unit;
-import com.mckeydonelly.animalpark.settings.unit.UnitSettings;
+import com.mckeydonelly.animalpark.settings.creature.Creature;
+import com.mckeydonelly.animalpark.settings.creature.CreaturesSettings;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,16 +14,16 @@ import static com.diogonunes.jcolor.Attribute.NONE;
 import static com.diogonunes.jcolor.Attribute.RED_TEXT;
 
 /**
- * Service for processing application settings and units configuration.
+ * Service for processing application settings and creatures configuration.
  */
 public class SettingsService {
     private static final String APP_SETTINGS_PATH = "app.properties";
-    private static final String ANIMAL_SETTINGS_PATH = "unit-settings.yaml";
+    private static final String CREATURES_SETTINGS_PATH = "creatures-settings.yaml";
     private final Properties appSettings;
-    private final UnitSettings unitSettings;
+    private final CreaturesSettings creaturesSettings;
 
     public SettingsService() {
-        this.unitSettings = initAnimalSettings();
+        this.creaturesSettings = initCreaturesSettings();
         this.appSettings = new Properties();
     }
 
@@ -69,39 +69,39 @@ public class SettingsService {
     }
 
     /**
-     * Initializing unit settings from a YAML file.
+     * Initializing creature settings from a YAML file.
      *
-     * @return UnitSettings
+     * @return CreaturesSettings
      */
-    private UnitSettings initAnimalSettings() {
+    private CreaturesSettings initCreaturesSettings() {
         ObjectMapper mapper = new YAMLMapper();
-        UnitSettings tmpUnitSettings = null;
-        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(ANIMAL_SETTINGS_PATH)) {
-            tmpUnitSettings = mapper.readValue(inputStream, UnitSettings.class);
+        CreaturesSettings tmpCreaturesSettings = null;
+        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(CREATURES_SETTINGS_PATH)) {
+            tmpCreaturesSettings = mapper.readValue(inputStream, CreaturesSettings.class);
         } catch (IOException e) {
-            System.out.println(colorize("Can't find or read properties file for animals by path: " + ANIMAL_SETTINGS_PATH, RED_TEXT(), NONE()));
+            System.out.println(colorize("Can't find or read properties file for creatures by path: " + CREATURES_SETTINGS_PATH, RED_TEXT(), NONE()));
             e.printStackTrace();
             System.exit(1);
         }
-        return tmpUnitSettings;
+        return tmpCreaturesSettings;
     }
 
     /**
-     * Get unit setting by name
+     * Get creature setting by name
      *
-     * @param name unit name
-     * @return configuration of this unit
+     * @param name creature name
+     * @return configuration of this creature
      */
-    public Unit getUnitByName(String name) {
-        return unitSettings.getUnits().get(name);
+    public Creature getCreatureByName(String name) {
+        return creaturesSettings.getCreatures().get(name);
     }
 
     /**
-     * Get configuration for all units
+     * Get configuration for all creatures
      *
-     * @return units settings
+     * @return creatures settings
      */
-    public UnitSettings getAnimalSettings() {
-        return unitSettings;
+    public CreaturesSettings getCreaturesSettings() {
+        return creaturesSettings;
     }
 }

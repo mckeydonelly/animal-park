@@ -12,9 +12,11 @@ import java.util.List;
  */
 public class ParkMapInitializer {
     private final SettingsService settingsService;
+    private final LocationProcessor locationProcessor;
 
-    public ParkMapInitializer(SettingsService settingsService) {
+    public ParkMapInitializer(SettingsService settingsService, LocationProcessor locationProcessor) {
         this.settingsService = settingsService;
+        this.locationProcessor = locationProcessor;
     }
 
     /**
@@ -58,13 +60,12 @@ public class ParkMapInitializer {
     }
 
     /**
-     * Fills locations starting units
+     * Fills locations starting creatures
      * @param parkMap empty map
      */
     private void generateCreature(ParkMap parkMap) {
         System.out.println("Create creatures... growing plants...");
 
-        parkMap.getAllLocations()
-                .forEach(Location::fill);
+        locationProcessor.fill(parkMap);
     }
 }

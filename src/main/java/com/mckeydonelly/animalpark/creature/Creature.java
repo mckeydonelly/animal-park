@@ -1,12 +1,12 @@
-package com.mckeydonelly.animalpark.unit;
+package com.mckeydonelly.animalpark.creature;
 
 import com.mckeydonelly.animalpark.map.Position;
-import com.mckeydonelly.animalpark.settings.unit.UnitProperties;
+import com.mckeydonelly.animalpark.settings.creature.CreatureProperties;
 
 /**
  * Stores the state of the creature
  */
-public class Unit {
+public class Creature {
     private final double weight;
     private final String name;
     private final int moveSpeed;
@@ -16,12 +16,12 @@ public class Unit {
     private volatile boolean dead;
     private volatile boolean readyToReproduction;
 
-    public Unit(Position position, String name, UnitProperties unitProperties) {
+    public Creature(Position position, String name, CreatureProperties creatureProperties) {
         this.name = name;
         this.positionOnMap = position;
-        this.weight = unitProperties.getWeight();
-        this.moveSpeed = unitProperties.getMoveSpeed();
-        this.weightEatToFill = unitProperties.getWeightEatToFill();
+        this.weight = creatureProperties.getWeight();
+        this.moveSpeed = creatureProperties.getMoveSpeed();
+        this.weightEatToFill = creatureProperties.getWeightEatToFill();
         this.weightEaten = weightEatToFill;
         this.readyToReproduction = true;
     }

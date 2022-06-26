@@ -34,8 +34,8 @@ public class StatisticService {
         parkMap.getAllLocations()
                 .forEach(location -> location.getUniqueEntitiesCount().forEach((k, v) -> uniqueEntitiesTotal.merge(k, v, Integer::sum)));
 
-        settingsService.getAnimalSettings()
-                .getUnits().forEach((key, value) -> statPrint
+        settingsService.getCreaturesSettings()
+                .getCreatures().forEach((key, value) -> statPrint
                         .append(value.getEmoji())
                         .append("=")
                         .append(uniqueEntitiesTotal.getOrDefault(key, 0))

@@ -1,13 +1,13 @@
 package com.mckeydonelly.animalpark.activity;
 
+import com.mckeydonelly.animalpark.creature.Creature;
 import com.mckeydonelly.animalpark.map.Location;
 import com.mckeydonelly.animalpark.map.ParkMap;
 import com.mckeydonelly.animalpark.map.Position;
 import com.mckeydonelly.animalpark.settings.SettingsService;
 import com.mckeydonelly.animalpark.settings.SettingsType;
 import com.mckeydonelly.animalpark.settings.SimulationSettings;
-import com.mckeydonelly.animalpark.unit.EatingProcessor;
-import com.mckeydonelly.animalpark.unit.Unit;
+import com.mckeydonelly.animalpark.creature.EatingProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,21 +18,21 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * Contains logic for unit action
+ * Contains logic for creature action
  */
-public class UnitActions {
+public class CreatureActions {
     private final ParkMap parkMap;
     private final SimulationSettings settings;
     private final EatingProcessor eatingProcessor;
     private final SettingsService settingsService;
 
-    private final Map<ActionTypes, Consumer<Unit>> actionMapper = Map.of(
+    private final Map<ActionTypes, Consumer<Creature>> actionMapper = Map.of(
             ActionTypes.MOVE, this::move,
             ActionTypes.REPRODUCTION, this::reproduction,
             ActionTypes.EAT, this::eat
     );
 
-    public UnitActions(ParkMap parkMap, SimulationSettings settings, EatingProcessor eatingProcessor, SettingsService settingsService) {
+    public CreatureActions(ParkMap parkMap, SimulationSettings settings, EatingProcessor eatingProcessor, SettingsService settingsService) {
         this.parkMap = parkMap;
         this.settings = settings;
         this.eatingProcessor = eatingProcessor;
@@ -40,14 +40,14 @@ public class UnitActions {
     }
 
     /**
-     * Return available actions for this unit by his type
-     * @param unit unit
+     * Return available actions for this creature by his type
+     * @param creature creature
      * @return list of available types with lambdas
      */
-    public List<Consumer<Unit>> getAvailableActions(Unit unit) {
-        List<ActionTypes> availableActionsConfiguration = settingsService.getUnitByName(unit.getName()).getAvailableActions();
+    public List<Consumer<Creature>> getAvailableActions(Creature creature) {
+        List<ActionTypes> availableActionsConfiguration = settingsService.getCreatureByName(creature.getName()).getAvailableActions();
 
-        List<Consumer<Unit>> availableActions = new ArrayList<>();
+        List<Consumer<Creature>> availableActions = new ArrayList<>();
 
         for (ActionTypes actionType : ActionTypes.values()) {
             if(availableActionsConfiguration.contains(actionType)) {
@@ -61,26 +61,26 @@ public class UnitActions {
     /**
      * Eating action
      *
-     * @param unit unit
+     * @param creature creature
      */
-    public void eat(Unit unit) {
-        Location location = parkMap.getLocation(unit.getPosition().row(), unit.getPosition().column());
+    public void eat(Creature creature) {
+        Location location = parkMap.getLocation(creature.getPosition().row(), creature.getPosition().column());
 
         location.lockLocation();
 
         try {
-            Set<String> eatableList = eatingProcessor.getEatableList(unit.getName());
-            ArrayList<Unit> eatableEntities = location.getEntitiesOnLocationList().stream()
+            Set<String> eatableList = eatingProcessor.getEatableList(creature.getName());
+            ArrayList<Creature> eatableEntities = location.getEntitiesOnLocationList().stream()
                     .filter(entityOnLoc -> eatableList.contains(entityOnLoc.getName()))
                     .collect(Collectors.toCollection(ArrayList::new));
 
             if (!eatableEntities.isEmpty()) {
                 int randomTarget = ThreadLocalRandom.current().nextInt(eatableEntities.size());
-                Unit targetUnit = eatableEntities.get(randomTarget);
-                if (!targetUnit.isDead() && eatingProcessor.getEatResult(unit.getName(), targetUnit.getName())) {
-                    unit.setWeightEaten(Math.min(unit.getWeightEaten() + targetUnit.getWeight(), unit.getWeightEatToFill()));
-                    targetUnit.die();
-                    location.remove(targetUnit);
+                Creature targetCreature = eatableEntities.get(randomTarget);
+                if (!targetCreature.isDead() && eatingProcessor.getEatResult(creature.getName(), targetCreature.getName())) {
+                    creature.setWeightEaten(Math.min(creature.getWeightEaten() + targetCreature.getWeight(), creature.getWeightEatToFill()));
+                    targetCreature.die();
+                    location.remove(targetCreature);
                 }
             }
         } finally {
@@ -91,26 +91,26 @@ public class UnitActions {
     /**
      * Reproduction action
      *
-     * @param unit unit
+     * @param creature creature
      */
-    public void reproduction(Unit unit) {
-        if (!unit.isReadyToReproduction()) {
+    public void reproduction(Creature creature) {
+        if (!creature.isReadyToReproduction()) {
             return;
         }
 
-        Location location = parkMap.getLocation(unit.getPosition().row(), unit.getPosition().column());
+        Location location = parkMap.getLocation(creature.getPosition().row(), creature.getPosition().column());
         location.lockLocation();
 
         try {
-            Unit partnerForReproduction = location.getEntitiesOnLocationList().stream()
-                    .filter(entityOnLoc -> entityOnLoc.getName().equals(unit.getName()))
+            Creature partnerForReproduction = location.getEntitiesOnLocationList().stream()
+                    .filter(entityOnLoc -> entityOnLoc.getName().equals(creature.getName()))
                     .findAny()
                     .orElse(null);
 
             if (partnerForReproduction != null) {
                 partnerForReproduction.setReadyToReproduction(false);
-                Unit childUnit = new Unit(unit.getPosition(), unit.getName(), settingsService.getUnitByName(unit.getName()).getUnitProperties());
-                location.add(childUnit);
+                Creature childCreature = new Creature(creature.getPosition(), creature.getName(), settingsService.getCreatureByName(creature.getName()).getCreatureProperties());
+                location.add(childCreature);
                 partnerForReproduction.setReadyToReproduction(false);
             }
         } finally {
@@ -121,12 +121,12 @@ public class UnitActions {
     /**
      * Move action
      *
-     * @param unit unit
+     * @param creature creature
      */
-    public void move(Unit unit) {
-        Location currentLocation = parkMap.getLocation(unit.getPosition().row(), unit.getPosition().column());
+    public void move(Creature creature) {
+        Location currentLocation = parkMap.getLocation(creature.getPosition().row(), creature.getPosition().column());
         Location endLocation = currentLocation;
-        int stepsToMove = unit.getMoveSpeed();
+        int stepsToMove = creature.getMoveSpeed();
 
         while (stepsToMove > 0) {
             int directionIndex = ThreadLocalRandom.current().nextInt(Direction.values().length);
@@ -141,19 +141,19 @@ public class UnitActions {
         if (currentLocation != endLocation) {
             currentLocation.lockLocation();
             try {
-                currentLocation.remove(unit);
+                currentLocation.remove(creature);
             } finally {
                 currentLocation.unlockLocation();
             }
 
             endLocation.lockLocation();
             try {
-                endLocation.add(unit);
+                endLocation.add(creature);
             } finally {
                 endLocation.unlockLocation();
             }
 
-            unit.setPosition(endLocation.getPosition());
+            creature.setPosition(endLocation.getPosition());
         }
     }
 
@@ -165,7 +165,7 @@ public class UnitActions {
      * @param direction direction for move
      * @return next location
      *
-     * If unit can't possibly move to next location with this direction (end of map or next location contains maximum units by this type)
+     * If creature can't possibly move to next location with this direction (end of map or next location contains maximum creatures by this type)
      * returns current position
      */
     private Location getNextPosition(ParkMap parkMap, Location currentLocation, Direction direction) {

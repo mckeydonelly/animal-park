@@ -1,31 +1,31 @@
-package com.mckeydonelly.animalpark.settings.unit;
+package com.mckeydonelly.animalpark.settings.creature;
 
 import com.mckeydonelly.animalpark.activity.ActionTypes;
-import com.mckeydonelly.animalpark.unit.UnitTypes;
+import com.mckeydonelly.animalpark.creature.CreatureTypes;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * POJO class for storing parameters and settings of units
+ * POJO class for storing parameters and settings of creatures
  */
-public class Unit {
-    private UnitProperties unitProperties;
-    private UnitTypes type;
+public class Creature {
+    private CreatureProperties creatureProperties;
+    private CreatureTypes type;
     private List<ActionTypes> availableActions;
     private String emoji;
     private int maxByLocation;
     private Map<String, Integer> eatChance;
 
-    public UnitProperties getUnitProperties() {
-        return unitProperties;
+    public CreatureProperties getCreatureProperties() {
+        return creatureProperties;
     }
 
     public String getEmoji() {
         return emoji;
     }
 
-    public UnitTypes getType() {
+    public CreatureTypes getType() {
         return type;
     }
 
