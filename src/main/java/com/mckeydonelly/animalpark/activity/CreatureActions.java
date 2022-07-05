@@ -70,7 +70,8 @@ public class CreatureActions {
 
         try {
             Set<String> eatableList = eatingProcessor.getEatableList(creature.getName());
-            ArrayList<Creature> eatableEntities = location.getEntitiesOnLocationList().stream()
+            ArrayList<Creature> eatableEntities = location.getEntitiesOnLocationList()
+                    .stream()
                     .filter(entityOnLoc -> eatableList.contains(entityOnLoc.getName()))
                     .collect(Collectors.toCollection(ArrayList::new));
 

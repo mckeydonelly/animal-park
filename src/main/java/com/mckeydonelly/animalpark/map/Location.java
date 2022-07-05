@@ -2,9 +2,10 @@ package com.mckeydonelly.animalpark.map;
 
 import com.mckeydonelly.animalpark.creature.Creature;
 import com.mckeydonelly.animalpark.settings.SettingsService;
-import com.mckeydonelly.animalpark.creature.CreatureTypes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.locks.Lock;
@@ -84,9 +85,9 @@ public class Location {
      * Change counter of uniques creatures on location
      *
      * @param creature creature
-     * @param leave flag of the exit entity from the location or death
+     * @param leave    flag of the exit entity from the location or death
      * @return boolean
-     *
+     * <p>
      * Return false if location have maximum of this creature type on location
      */
     public boolean changeUniqueEntities(Creature creature, boolean leave) {

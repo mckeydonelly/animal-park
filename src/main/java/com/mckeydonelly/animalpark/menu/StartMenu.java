@@ -81,7 +81,7 @@ public class StartMenu {
         while (badParam) {
             try {
                 String input = lineReader.readLine();
-                if ("".equals(input)) {
+                if (input == null || input.isEmpty()) {
                     break;
                 }
                 int paramValue = Integer.parseInt(input);

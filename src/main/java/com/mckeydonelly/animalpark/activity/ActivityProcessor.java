@@ -10,7 +10,11 @@ import com.mckeydonelly.animalpark.utils.StatisticService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -105,7 +109,8 @@ public class ActivityProcessor {
             entitiesTaskList.forEach(runnable -> finalFuturesEntitiesTaskList.add(executorService.submit(runnable)));
 
             while (true) {
-                boolean isFinished = finalFuturesEntitiesTaskList.stream().allMatch(Future::isDone);
+                boolean isFinished = finalFuturesEntitiesTaskList.stream()
+                        .allMatch(Future::isDone);
                 if (isFinished)
                     break;
             }
