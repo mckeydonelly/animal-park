@@ -10,7 +10,7 @@ public enum SettingsType {
     TURNS_COUNT("app.turnsCount", "turns count (number)"),
     TURNS_FOR_DIE_BY_MAX_FILL("app.turnForDieByMaxFill", "turns for die (creatures loses every turn of \"maximum food / turns for die\" (number)"),
     STATISTIC_UPDATE_FREQUENCY("app.statisticUpdateFrequency", "statistics update frequency (ms)"),
-    STARTING_CREATURES_COUNT_BY_LOCATION("app.startingCreaturesCount", "creatures count by location"),
+    STARTING_CREATURES_COUNT_BY_LOCATION("app.startingCreaturesCount", "starting creatures count by location"),
     PLANTS_GROWING_COUNT("app.plantsGrowingCount", "plants growing count by task of growing cycle"),
     GROW_PLANTS_FREQUENCY("app.growPlantsFrequency", "the frequency of the task of growing new plants (ms)");
 

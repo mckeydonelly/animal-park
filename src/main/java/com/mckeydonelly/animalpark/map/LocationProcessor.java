@@ -31,7 +31,7 @@ public class LocationProcessor {
         parkMap.getAllLocations()
                 .forEach(location -> {
                     for (int index = 0; index <= startingCreaturesCount; index++) {
-                        String entityType = entityTypes.get(ThreadLocalRandom.current().nextInt(startingCreaturesCount));
+                        String entityType = entityTypes.get(ThreadLocalRandom.current().nextInt(entityTypes.size()));
                         Creature creature = new Creature(location.getPosition(), entityType, settingsService.getCreatureByName(entityType).getCreatureProperties());
                         location.add(creature);
                     }

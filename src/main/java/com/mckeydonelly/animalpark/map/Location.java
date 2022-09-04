@@ -38,20 +38,6 @@ public class Location {
         return uniqueEntitiesCount;
     }
 
-    /**
-     * Filling location for the starting simulation.
-     */
-    public void fill() {
-        List<String> entityTypes = new ArrayList<>(settingsService.getCreaturesSettings().getCreatures().keySet());
-        int entityTypesCount = settingsService.getCreaturesSettings().getCreatures().size();
-
-        for (int index = 0; index <= entityTypesCount; index++) {
-            String entityType = entityTypes.get(ThreadLocalRandom.current().nextInt(entityTypesCount));
-            Creature creature = new Creature(position, entityType, settingsService.getCreatureByName(entityType).getCreatureProperties());
-            add(creature);
-        }
-    }
-
     public void lockLocation() {
         lock.lock();
     }

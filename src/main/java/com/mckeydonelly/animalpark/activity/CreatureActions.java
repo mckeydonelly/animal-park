@@ -78,7 +78,7 @@ public class CreatureActions {
             if (!eatableEntities.isEmpty()) {
                 int randomTarget = ThreadLocalRandom.current().nextInt(eatableEntities.size());
                 Creature targetCreature = eatableEntities.get(randomTarget);
-                if (!targetCreature.isDead() && eatingProcessor.getEatResult(creature.getName(), targetCreature.getName())) {
+                if (isEaten(creature, targetCreature)) {
                     creature.setWeightEaten(Math.min(creature.getWeightEaten() + targetCreature.getWeight(), creature.getWeightEatToFill()));
                     targetCreature.die();
                     location.remove(targetCreature);
@@ -109,7 +109,7 @@ public class CreatureActions {
                     .orElse(null);
 
             if (partnerForReproduction != null) {
-                partnerForReproduction.setReadyToReproduction(false);
+                creature.setReadyToReproduction(false);
                 Creature childCreature = new Creature(creature.getPosition(), creature.getName(), settingsService.getCreatureByName(creature.getName()).getCreatureProperties());
                 location.add(childCreature);
                 partnerForReproduction.setReadyToReproduction(false);
@@ -156,6 +156,10 @@ public class CreatureActions {
 
             creature.setPosition(endLocation.getPosition());
         }
+    }
+
+    private boolean isEaten(Creature creature, Creature targetCreature) {
+        return !targetCreature.isDead() && eatingProcessor.getEatResult(creature.getName(), targetCreature.getName());
     }
 
     /**
